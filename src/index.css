@@ -180,6 +180,10 @@ body {
                 @apply py-5 my-5 border-y border-dashed space-y-1;
 
                 li {
+                    @apply flex items-center;
+
+                    @apply flex items-center;
+
                     .check {
                         @apply text-[#00A154] w-5;
                     }
