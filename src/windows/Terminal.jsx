@@ -1,5 +1,7 @@
 import WindowWrapper from '#hoc/WindowWrapper';
-import React from 'react'
+import React from 'react';
+import { techStack } from '#constants';
+
 
 const Terminal = () => {
   return (
@@ -9,11 +11,40 @@ const Terminal = () => {
         <h2>Tech Stack</h2>
         </div>
 
-        <div>
+        <div className="techstack">
         <p> 
-            <span className="font-bold">@swaraj %</span>
+            <span className="font-bold">@swaraj % </span>
             show tech stack
         </p>
+        <div className="label"> 
+            <p className="w-32">Category</p>
+            <p>Technologies</p>
+        </div>
+
+        <ul className = "content">
+          {techStack.map(( {category, items} ) => (
+            <li key={category}>
+              <span className="check">✓</span>
+              <h3>{category}</h3>
+              <ul>
+                {items.map((item, i) => (
+                  <li key = {i}>{item}{i < items.length - 1 ? "," : ""}</li>
+                ))}  
+              </ul>
+            </li>
+          ))}
+        </ul>
+        <div className="footnote">
+          <p>
+            <span className="check">✓</span> {techStack.length} of {techStack.length} stacks loaded successfully (100%)
+            
+          </p>
+          <p>
+            <span>🚩</span>
+            Render time: 6ms
+          </p>
+
+        </div>
         </div>
     </>
   );
