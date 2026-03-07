@@ -1,20 +1,34 @@
 import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Dock, Navbar, Welcome } from "#components";
 import { gsap } from 'gsap';
 import { Draggable } from 'react-draggable';
 gsap.registerPlugin(Draggable);
-import { TerminalWindow } from "#windows";
+import { TerminalWindow, BlogArticle } from "#windows";
+import Safari from '#windows/Safari';
 
-
-const App = () => {
+const HomePage = () => {
     return (
-        <main>
+        <>
             <Navbar />
             <Welcome />
             <Dock />
-
             <TerminalWindow />
-        </main>
+            <Safari/>
+        </>
+    );
+};
+
+const App = () => {
+    return (
+        <Router>
+            <main>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/blog/:slug" element={<BlogArticle />} />
+                </Routes>
+            </main>
+        </Router>
     )
 }
 export default App;
