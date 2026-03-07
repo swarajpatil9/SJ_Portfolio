@@ -7,7 +7,7 @@ import gsap from "gsap";
 import useWindowStore from "#store/window.jsx";
 
 const Dock = () => {
-  const { openWindow, closeWindow, windows } = useWindowStore();
+  const { openWindow, minimizeWindow, setPreviewWindow, windows, unminimizeWindow } = useWindowStore();
   const  dockRef = useRef(null);
 
   useGSAP(() => {
@@ -63,22 +63,39 @@ const Dock = () => {
   const toggleApp = (app) => {
     if(!app.canOpen) return;
 
-    const window = useWindowStore.getState().windows[app.id];
+    const window = windows[app.id];
 
-    if(window.isOpen) {
-      closeWindow(app.id);
+    if(window.isOpen && !window.isMinimized) {
+      // Window is open and visible - minimize it
+      minimizeWindow(app.id);
+    } else if(window.isOpen && window.isMinimized) {
+      // Window is minimized - restore it
+      unminimizeWindow(app.id);
     } else {
+      // Window is closed - open it
       openWindow(app.id);
     }
+  };
 
-    console.log('Updated state:', useWindowStore.getState().windows);
+  const handleMouseEnter = (appId, canOpen) => {
+    if (!canOpen) return;
+    setPreviewWindow(appId);
+  };
+
+  const handleMouseLeave = () => {
+    setPreviewWindow(null);
   };
   
   return (
     <section id="dock">
       <div ref={dockRef} className="dock-container">
-        {dockApps.map(({ id, name, icon, canOpen }) => (
-          <div key={id} className="relative flex justify-center">
+        {dockApps.map(({ id, name, icon, canOpen }) => {
+          const windowState = windows[id];
+          const isActive = windowState?.isOpen && !windowState?.isMinimized;
+          const isMinimized = windowState?.isOpen && windowState?.isMinimized;
+          
+          return (
+          <div key={id} className="relative flex flex-col items-center justify-center">
             <button 
             type = "button" 
             className="dock-icon"
@@ -87,7 +104,9 @@ const Dock = () => {
             data-tooltip-content = {name}
             data-tooltip-delay-show = {150}
             disabled={!canOpen}
-            onClick={() => toggleApp({ id, canOpen })} 
+            onClick={() => toggleApp({ id, canOpen })}
+            onMouseEnter={() => handleMouseEnter(id, canOpen)}
+            onMouseLeave={handleMouseLeave}
             >
               <img
                 src={`/images/${icon}`}
@@ -96,8 +115,14 @@ const Dock = () => {
                 className={canOpen ? "" : "opacity-60"}
               />
             </button>
+            {(isActive || isMinimized) && (
+              <div className="dock-indicator">
+                <div className={`dot ${isMinimized ? 'minimized' : 'active'}`} />
+              </div>
+            )}
           </div>
-        ))}
+        );
+        })}
         <Tooltip id="dock-tooltip" place="top" className="tooltip" />
       </div>
     </section> 

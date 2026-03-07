@@ -85,8 +85,24 @@ body {
             @apply bg-white/20 backdrop-blur-md justify-between rounded-2xl p-1.5 flex items-end gap-1.5;
         }
 
+        .dock-indicator {
+            @apply absolute -bottom-1 flex justify-center w-full;
+            
+            .dot {
+                @apply w-1 h-1 rounded-full transition-all duration-200;
+            }
+            
+            .dot.active {
+                @apply bg-gray-800;
+            }
+            
+            .dot.minimized {
+                @apply bg-gray-500;
+            }
+        }
+
         .tooltip {
-            @apply !py-1 !px-3 !w-fit !text-center !text-xs !rounded-md !bg-blue-200 !text-blue-900 !shadow-2xl;
+            @apply py-1! px-3! w-fit! text-center! text-xs! rounded-md! bg-blue-200! text-blue-900! shadow-2xl!;
         }
 
         .dock-icon {
@@ -99,23 +115,67 @@ body {
     }
 
     #window-controls {
-        @apply flex gap-2;
+        @apply flex gap-2 relative z-10 pointer-events-auto;
+
+        div {
+            @apply size-3 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center;
+            
+            &::before {
+                content: '';
+                @apply opacity-0 transition-opacity duration-200 text-[8px] font-bold;
+            }
+            
+            &:hover::before {
+                @apply opacity-100;
+            }
+        }
 
         .close {
-            @apply size-3.5 rounded-full bg-[#ff6157] cursor-pointer;
+            @apply bg-[#ff5f57];
+            
+            &:hover {
+                @apply bg-[#ff5f57] brightness-90;
+            }
+            
+            &:hover::before {
+                content: '×';
+                @apply text-[#4d0000] text-xs absolute;
+            }
         }
 
         .minimize {
-            @apply size-3.5 rounded-full bg-[#ffc030];
+            @apply bg-[#febc2e];
+            
+            &:hover {
+                @apply bg-[#febc2e] brightness-90;
+            }
+            
+            &:hover::before {
+                content: '−';
+                @apply text-[#7d5000] text-[10px] absolute;
+            }
         }
 
         .maximize {
-            @apply size-3.5 rounded-full bg-[#2acb42];
+            @apply bg-[#28c840];
+            
+            &:hover {
+                @apply bg-[#28c840] brightness-90;
+            }
+            
+            &:hover::before {
+                content: '⤢';
+                @apply text-[#003e00] text-[10px] absolute;
+            }
         }
     }
 
     #window-header {
         @apply flex items-center justify-between px-4 py-3 rounded-t-lg bg-gray-50 border-b border-gray-200 select-none text-sm text-gray-400;
+        
+        h2 {
+            @apply cursor-move;
+        }
     }
 
     #safari {
@@ -166,7 +226,7 @@ body {
         @apply w-xl absolute top-32 left-1/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
         h2 {
-            @apply font-bold text-sm text-center w-full;
+            @apply font-bold text-sm text-center flex-1;
         }
 
         .techstack {

@@ -1,13 +1,14 @@
 import WindowWrapper from '#hoc/WindowWrapper';
 import React from 'react';
-import { techStack } from '#constants';
+import { techStack } from '#constants/index.js';
+import WindowControls from '#components/WindowControls.jsx';
 
 
 const Terminal = () => {
   return (
     <>
         <div id ="window-header">
-        <p>Window Controls</p>
+        <WindowControls target="terminal" />
         <h2>Tech Stack</h2>
         </div>
 
