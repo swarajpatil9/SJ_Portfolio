@@ -1,11 +1,10 @@
 import dayjs from "dayjs";
 import {navIcons, navLinks} from "#constants/index.js";
+import useWindowStore from "#store/window";
+
 
 const Navbar = () => {
-    const now = new Date();
-    const formattedTime = now.toLocaleDateString('en-US', {
-        weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
-    });
+    const{ openWindow } = useWindowStore();
 
     return (
         <nav>
@@ -14,8 +13,8 @@ const Navbar = () => {
                 <p className="font-bold">Swaraj's Portfolio</p>
 
                 <ul>
-                    {navLinks.map(({id, name}) => (
-                        <li key={id}>
+                    {navLinks.map(({id, name, type}) => (
+                        <li key={id} onClick={() => openWindow(type)}>
                             <p>{name}</p>
                         </li>
                     ))}
