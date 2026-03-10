@@ -4,7 +4,7 @@ import { Dock, Navbar, Welcome } from "#components";
 import { gsap } from 'gsap';
 import { Draggable } from 'react-draggable';
 gsap.registerPlugin(Draggable);
-import { TerminalWindow, BlogArticle } from "#windows";
+import { TerminalWindow, BlogArticle, ResumeWindow } from "#windows";
 import Safari from '#windows/Safari';
 
 const HomePage = () => {
@@ -15,6 +15,7 @@ const HomePage = () => {
             <Dock />
             <TerminalWindow />
             <Safari/>
+            <ResumeWindow />
         </>
     );
 };
