@@ -273,10 +273,10 @@ body {
     }
 
     #contact {
-        @apply max-w-2xl absolute top-60 left-5/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+        @apply w-80 absolute top-60 left-5/12 bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
 
         h2 {
-            @apply font-bold text-sm text-center w-full;
+            @apply font-bold text-sm text-center flex-1;
         }
 
         h3 {
@@ -284,17 +284,17 @@ body {
         }
 
         ul {
-            @apply flex items-center gap-3;
+            @apply grid grid-cols-2 gap-2 p-3;
 
             li {
-                @apply rounded-lg p-3 w-60 hover:-translate-y-0.5 hover:scale-105 origin-center transition-all duration-300;
+                @apply rounded-lg p-2 hover:-translate-y-0.5 hover:scale-105 origin-center transition-all duration-300;
 
                 a {
-                    @apply space-y-5;
+                    @apply flex items-center gap-2;
                 }
 
                 p {
-                    @apply font-semibold text-sm text-white;
+                    @apply font-semibold text-xs text-white;
                 }
             }
         }
