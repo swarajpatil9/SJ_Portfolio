@@ -1,10 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Dock, Navbar, Welcome } from "#components";
-import { gsap } from 'gsap';
-import { Draggable } from 'react-draggable';
-gsap.registerPlugin(Draggable);
-import { TerminalWindow, BlogArticle, ResumeWindow, Finder } from "#windows";
+import { TerminalWindow, BlogArticle, ResumeWindow, Finder, TextFileWindow, ImageFileWindow } from "#windows";
 import Safari from '#windows/Safari';
 
 const HomePage = () => {
@@ -17,6 +14,8 @@ const HomePage = () => {
             <Safari/>
             <ResumeWindow />
             <Finder />
+            <TextFileWindow />
+            <ImageFileWindow />
         </>
     );
 };

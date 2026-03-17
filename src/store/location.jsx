@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { locations } from '../config/locations';
+import { locations } from '#constants/index.js';
 
-import DEFAULT_LOCATION = locations.work;
+const DEFAULT_LOCATION = locations.work;
 
 const useLocationStore = create(immer((set) => ({
     activeLocation: DEFAULT_LOCATION,

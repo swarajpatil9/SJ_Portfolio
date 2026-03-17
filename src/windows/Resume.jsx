@@ -33,7 +33,7 @@ const Resume = () => {
           onLoadError={(error) => console.error('Error loading PDF:', error)}
         >
             <Page 
-              pageNumber={1} 
+              pageNumber={Math.min(1, numPages || 1)} 
               renderTextLayer={true} 
               renderAnnotationLayer={true} 
             />

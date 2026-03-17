@@ -17,6 +17,7 @@ const useWindowStore = create(
         openWindow: (windowKey, data = null) => 
             set((state) => {
                 const window = state.windows[windowKey];
+                if (!window) return;
                 window.isOpen = true;
                 window.isMinimized = false;
                 window.data = data ?? window.data;
