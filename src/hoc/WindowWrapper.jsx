@@ -91,15 +91,14 @@ const WindowWrapper = (Component, windowKey) => {
             const el = ref.current;
             if (!el || !isOpen) return;
 
-            // Find the h2 title element to use as drag trigger (not the whole header)
-            const title = el.querySelector('#window-header h2');
+            const header = el.querySelector('#window-header');
 
             // Only make draggable when window is actually open
             const draggableInstance = Draggable.create(el, { 
-                trigger: title || el.querySelector('#window-header'), // Drag from title only
+                trigger: header || el,
                 onPress: () => focusWindow(windowKey),
                 bounds: "body",
-                dragClickables: false // Don't allow dragging clickable elements
+                dragClickables: false
             })[0];
 
             return () => {
