@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Dock, Navbar, Welcome } from "#components";
-import { TerminalWindow, BlogArticle, ResumeWindow, Finder, TextFileWindow, ImageFileWindow } from "#windows";
+import { Dock, Home, Navbar, Welcome } from "#components";
+import { TerminalWindow, BlogArticle, ResumeWindow, Finder, TextFileWindow, ImageFileWindow, Contact } from "#windows";
 import Safari from '#windows/Safari';
 
 const HomePage = () => {
@@ -16,6 +16,8 @@ const HomePage = () => {
             <Finder />
             <TextFileWindow />
             <ImageFileWindow />
+            <Contact />
+            <Home />
         </>
     );
 };
