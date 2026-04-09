@@ -52,7 +52,7 @@ const dockApps = [
         id: "photos",
         name: "Gallery", // was "Photos"
         icon: "photos.png",
-        canOpen: true,
+        canOpen: false,
     },
     {
         id: "contact",
