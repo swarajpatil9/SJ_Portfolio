@@ -3,8 +3,7 @@ import WindowControls from '#components/WindowControls.jsx';
 import useWindowStore from '#store/window.jsx';
 
 const ImageFile = () => {
-    const { windows } = useWindowStore();
-    const file = windows.imgfile.data;
+    const file = useWindowStore((state) => state.windows.imgfile.data);
     if (!file) return null;
 
     return (

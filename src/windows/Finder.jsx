@@ -7,9 +7,9 @@ import useWindowStore from "#store/window.jsx"
 import clsx from "clsx"
 
 const Finder = () => {
-    const { openWindow } = useWindowStore();
-
-    const { activeLocation, setActiveLocation } = useLocationStore();
+    const openWindow = useWindowStore((state) => state.openWindow);
+    const activeLocation = useLocationStore((state) => state.activeLocation);
+    const setActiveLocation = useLocationStore((state) => state.setActiveLocation);
 
     const openItem = (item) => {
         if (item.fileType === "pdf") return openWindow("resume");

@@ -7,7 +7,11 @@ import gsap from "gsap";
 import useWindowStore from "#store/window.jsx";
 
 const Dock = () => {
-  const { openWindow, minimizeWindow, setPreviewWindow, windows, unminimizeWindow } = useWindowStore();
+  const openWindow = useWindowStore((state) => state.openWindow);
+  const minimizeWindow = useWindowStore((state) => state.minimizeWindow);
+  const setPreviewWindow = useWindowStore((state) => state.setPreviewWindow);
+  const unminimizeWindow = useWindowStore((state) => state.unminimizeWindow);
+  const windows = useWindowStore((state) => state.windows);
   const  dockRef = useRef(null);
 
   useGSAP(() => {
