@@ -1,7 +1,9 @@
 import useWindowStore from "#store/window";
 
 const WindowControls = ({ target }) => {
-  const { closeWindow, minimizeWindow, maximizeWindow } = useWindowStore();
+  const closeWindow = useWindowStore((state) => state.closeWindow);
+  const minimizeWindow = useWindowStore((state) => state.minimizeWindow);
+  const maximizeWindow = useWindowStore((state) => state.maximizeWindow);
   
   const handleClose = (e) => {
     e.preventDefault();

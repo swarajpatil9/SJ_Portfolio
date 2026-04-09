@@ -4,7 +4,7 @@ import useWindowStore from "#store/window";
 
 
 const Navbar = () => {
-    const{ openWindow } = useWindowStore();
+    const openWindow = useWindowStore((state) => state.openWindow);
 
     return (
         <nav>

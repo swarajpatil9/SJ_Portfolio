@@ -9,8 +9,9 @@ gsap.registerPlugin(Draggable);
 
 const WindowWrapper = (Component, windowKey) => {
     const Wrapped = (props) => {
-        const { focusWindow, windows, previewWindow } = useWindowStore();
-        const windowState = windows?.[windowKey];
+        const focusWindow = useWindowStore((state) => state.focusWindow);
+        const previewWindow = useWindowStore((state) => state.previewWindow);
+        const windowState = useWindowStore((state) => state.windows?.[windowKey]);
         const hasWindowState = Boolean(windowState);
         const { isOpen, zIndex, isMaximized, isMinimized } = windowState ?? {
             isOpen: false,

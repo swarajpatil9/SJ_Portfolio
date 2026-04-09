@@ -31,8 +31,8 @@ const savePosition = (projectId, x, y) => {
 };
 
 const Home = () => {
-    const { openWindow } = useWindowStore();
-    const { setActiveLocation } = useLocationStore();
+    const openWindow = useWindowStore((state) => state.openWindow);
+    const setActiveLocation = useLocationStore((state) => state.setActiveLocation);
 
     const openProject = (project) => {
         setActiveLocation(project);

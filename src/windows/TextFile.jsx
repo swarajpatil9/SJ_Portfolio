@@ -3,8 +3,7 @@ import WindowControls from '#components/WindowControls.jsx';
 import useWindowStore from '#store/window.jsx';
 
 const TextFile = () => {
-    const { windows } = useWindowStore();
-    const file = windows.txtfile.data;
+    const file = useWindowStore((state) => state.windows.txtfile.data);
     if (!file) return null;
     const paragraphs = file.description ?? [];
 
