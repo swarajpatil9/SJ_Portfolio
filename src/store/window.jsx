@@ -28,6 +28,7 @@ const useWindowStore = create(
         closeWindow: (windowKey) => 
             set((state) => {
                 const window = state.windows[windowKey];
+                if (!window) return;
                 window.isOpen = false;
                 window.isMinimized = false;
                 window.data = null;
@@ -37,12 +38,14 @@ const useWindowStore = create(
         minimizeWindow: (windowKey) => 
             set((state) => {
                 const window = state.windows[windowKey];
+                if (!window) return;
                 window.isMinimized = true;
         }),
 
         unminimizeWindow: (windowKey) => 
             set((state) => {
                 const window = state.windows[windowKey];
+                if (!window) return;
                 window.isMinimized = false;
                 window.zIndex = state.nextZIndex;
                 state.nextZIndex++;
@@ -51,12 +54,14 @@ const useWindowStore = create(
         maximizeWindow: (windowKey) => 
             set((state) => {
                 const window = state.windows[windowKey];
+                if (!window) return;
                 window.isMaximized = !window.isMaximized;
         }),
 
         focusWindow: (windowKey) => 
             set((state) => {
                 const window = state.windows[windowKey];
+                if (!window) return;
                 window.zIndex = state.nextZIndex;
                 state.nextZIndex++;
         }),   

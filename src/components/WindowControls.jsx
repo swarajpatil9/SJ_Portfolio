@@ -6,21 +6,18 @@ const WindowControls = ({ target }) => {
   const handleClose = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('🔴 Close clicked for:', target);
     closeWindow(target);
   };
 
   const handleMinimize = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('🟡 Minimize clicked for:', target);
     minimizeWindow(target);
   };
 
   const handleMaximize = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('🟢 Maximize clicked for:', target);
     maximizeWindow(target);
   };
 
