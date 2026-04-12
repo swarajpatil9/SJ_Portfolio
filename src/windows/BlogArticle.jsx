@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Copy, PanelLeft, Search, Share, Plus, ShieldHalf, Clock, User, Calendar, ArrowLeft } from 'lucide-react';
 import { blogData } from '#constants/blogData';
+import { APP_ROUTES } from '../config/routes';
 
 //React Started Content Component
 const ReactStartedContent = () => (
@@ -422,17 +423,30 @@ const BlogArticle = () => {
     
     // If blog not found, redirect to home
     if (!blog) {
-      navigate('/');
+      navigate(APP_ROUTES.HOME);
     }
   }, [blog, navigate]);
 
   const handleBack = () => {
-    navigate('/');
+    navigate(APP_ROUTES.HOME);
   };
 
-  // Return null while redirecting
+  // Render safe fallback while redirecting
   if (!blog) {
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <div className="text-center space-y-3">
+          <h2 className="text-xl font-semibold text-gray-800">Article not found</h2>
+          <p className="text-sm text-gray-500">Redirecting to home...</p>
+          <button
+            onClick={handleBack}
+            className="text-sm text-blue-600 hover:underline"
+          >
+            Go back now
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (

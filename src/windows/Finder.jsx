@@ -5,6 +5,7 @@ import { locations } from "#constants/index.js"
 import useLocationStore from "#store/location.jsx"
 import useWindowStore from "#store/window.jsx"
 import clsx from "clsx"
+import { WINDOW_IDS } from "../config/windowIds"
 
 const Finder = () => {
     const openWindow = useWindowStore((state) => state.openWindow);
@@ -12,10 +13,10 @@ const Finder = () => {
     const setActiveLocation = useLocationStore((state) => state.setActiveLocation);
 
     const openItem = (item) => {
-        if (item.fileType === "pdf") return openWindow("resume");
+        if (item.fileType === "pdf") return openWindow(WINDOW_IDS.RESUME);
         if (item.kind === "folder") return setActiveLocation(item);
         if (["fig", "url"].includes(item.fileType) && item.href)
-            return window.open(item.href, "_blank");
+            return window.open(item.href, "_blank", "noopener,noreferrer");
 
         const windowKey = `${item.fileType}${item.kind}`;
         return openWindow(windowKey, item)
@@ -26,7 +27,7 @@ const Finder = () => {
             <h3>{title}</h3>
             <ul>
             {items.map((item) => (
-                <li key={item.id} onClick={() => setActiveLocation(item)} className={clsx( item.id ===activeLocation.id ? "active" : "not-active" ,)}>
+                <li key={item.id} onClick={() => setActiveLocation(item)} className={clsx(item.id === activeLocation?.id ? "active" : "not-active")}>
                     <img src={item.icon} className="w-4" alt = {item.name}  />
                     <p className="text-sm font-medium truncate">{item.name}</p>
                 </li>
@@ -38,7 +39,7 @@ const Finder = () => {
     return (
     <>
         <div id="window-header">
-            <WindowControls target="finder" />
+            <WindowControls target={WINDOW_IDS.FINDER} />
             <Search className="icon" />
         </div>
 
@@ -49,12 +50,15 @@ const Finder = () => {
             </div>
 
             <ul className="content">
-                {activeLocation?.children.map((item) => (
+                {(activeLocation?.children ?? []).length === 0 ? (
+                    <li className="text-sm text-gray-500 p-4">No items in this folder.</li>
+                ) : (
+                (activeLocation?.children ?? []).map((item) => (
                     <li key={item.id} className={item.position} onClick={() => openItem(item)}>
                         <img src={item.icon} alt = {item.name} className="w-6" />
                         <p>{item.name}</p>
                     </li>
-                ))}
+                ))) }
             </ul>
         </div>
     </>
@@ -62,5 +66,5 @@ const Finder = () => {
 }
  
 
-const FinderWindow = WindowWrapper(Finder, "finder");
+const FinderWindow = WindowWrapper(Finder, WINDOW_IDS.FINDER);
 export default FinderWindow;

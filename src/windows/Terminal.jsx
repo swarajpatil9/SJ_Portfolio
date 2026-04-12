@@ -2,13 +2,14 @@ import WindowWrapper from '#hoc/WindowWrapper';
 import React from 'react';
 import { techStack } from '#constants/index.js';
 import WindowControls from '#components/WindowControls.jsx';
+import { WINDOW_IDS } from '../config/windowIds';
 
 
 const Terminal = () => {
   return (
     <>
         <div id ="window-header">
-        <WindowControls target="terminal" />
+      <WindowControls target={WINDOW_IDS.TERMINAL} />
         <h2>Tech Stack</h2>
         </div>
 
@@ -51,6 +52,6 @@ const Terminal = () => {
   );
 };
 
-const TerminalWindow = WindowWrapper(Terminal, "terminal"); 
+const TerminalWindow = WindowWrapper(Terminal, WINDOW_IDS.TERMINAL); 
 
 export default TerminalWindow;
