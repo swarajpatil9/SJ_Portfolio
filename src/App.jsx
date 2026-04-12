@@ -1,6 +1,8 @@
 import React, { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Dock, Home, Navbar, Welcome } from "#components";
+import { Dock, Home, Navbar, Welcome, ErrorBoundary, LoadingFallback } from "#components";
+import { APP_ROUTES } from "./config/routes";
+import { APP_MESSAGES } from "./config/appConstants";
 
 const TerminalWindow = lazy(() => import('#windows/Terminal'));
 const Safari = lazy(() => import('#windows/Safari'));
@@ -11,19 +13,22 @@ const ImageFileWindow = lazy(() => import('#windows/ImageFile'));
 const Contact = lazy(() => import('#windows/Contact'));
 const BlogArticle = lazy(() => import('#windows/BlogArticle'));
 
+const windowFallback = <LoadingFallback message={APP_MESSAGES.LOADING_WINDOW} />;
+const windowErrorFallback = <div className="p-4 text-sm text-gray-600">{APP_MESSAGES.WINDOW_ERROR}</div>;
+
 const HomePage = () => {
     return (
         <>
             <Navbar />
             <Welcome />
             <Dock />
-            <Suspense fallback={null}><TerminalWindow /></Suspense>
-            <Suspense fallback={null}><Safari/></Suspense>
-            <Suspense fallback={null}><ResumeWindow /></Suspense>
-            <Suspense fallback={null}><Finder /></Suspense>
-            <Suspense fallback={null}><TextFileWindow /></Suspense>
-            <Suspense fallback={null}><ImageFileWindow /></Suspense>
-            <Suspense fallback={null}><Contact /></Suspense>
+            <ErrorBoundary fallback={windowErrorFallback}><Suspense fallback={windowFallback}><TerminalWindow /></Suspense></ErrorBoundary>
+            <ErrorBoundary fallback={windowErrorFallback}><Suspense fallback={windowFallback}><Safari/></Suspense></ErrorBoundary>
+            <ErrorBoundary fallback={windowErrorFallback}><Suspense fallback={windowFallback}><ResumeWindow /></Suspense></ErrorBoundary>
+            <ErrorBoundary fallback={windowErrorFallback}><Suspense fallback={windowFallback}><Finder /></Suspense></ErrorBoundary>
+            <ErrorBoundary fallback={windowErrorFallback}><Suspense fallback={windowFallback}><TextFileWindow /></Suspense></ErrorBoundary>
+            <ErrorBoundary fallback={windowErrorFallback}><Suspense fallback={windowFallback}><ImageFileWindow /></Suspense></ErrorBoundary>
+            <ErrorBoundary fallback={windowErrorFallback}><Suspense fallback={windowFallback}><Contact /></Suspense></ErrorBoundary>
             <Home />
         </>
     );
@@ -34,8 +39,17 @@ const App = () => {
         <Router>
             <main>
                 <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/blog/:slug" element={<Suspense fallback={null}><BlogArticle /></Suspense>} />
+                    <Route path={APP_ROUTES.HOME} element={<HomePage />} />
+                    <Route
+                        path={APP_ROUTES.BLOG_ARTICLE}
+                        element={
+                            <ErrorBoundary fallback={<div className="p-4 text-sm text-gray-600">{APP_MESSAGES.APP_ERROR}</div>}>
+                                <Suspense fallback={<LoadingFallback message={APP_MESSAGES.LOADING_ARTICLE} />}>
+                                    <BlogArticle />
+                                </Suspense>
+                            </ErrorBoundary>
+                        }
+                    />
                 </Routes>
             </main>
         </Router>

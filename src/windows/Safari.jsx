@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import WindowControls from '#components/WindowControls.jsx';
 import WindowWrapper from '#hoc/WindowWrapper';
 import { ChevronLeft, ChevronRight, Copy, PanelLeft, Search, Share, Plus, ShieldHalf, MoveRight } from "lucide-react";
+import { APP_ROUTES } from '../config/routes';
+import { WINDOW_IDS } from '../config/windowIds';
 
 const blogPosts = [
   {
@@ -32,7 +34,7 @@ const Safari = () => {
   return (
     <> 
         <div id="window-header">
-            <WindowControls  target="safari"/>
+            <WindowControls  target={WINDOW_IDS.SAFARI}/>
 
             <PanelLeft className="ml-10 icon"/> 
 
@@ -64,17 +66,20 @@ const Safari = () => {
         <div className="blog">
             <h2>My Developer Blog</h2>
 
+            {blogPosts.length === 0 ? (
+                <p className="text-sm text-gray-500">No blog posts are available right now.</p>
+            ) : (
             <div className="space-y-8">
                 {blogPosts.map(({ id, image, title, date, link }) => (
                     <div key={id} className="blog-post">
                         <div className="col-span-2">
-                            <img src={image} alt={title} />
+                            <img src={image} alt={title} loading="lazy" />
                         </div>
 
                         <div className="content">
                             <p>{date}</p>
                             <h3>{title}</h3>
-                            <Link to={link} className="text-blue-600 text-xs hover:underline flex items-center gap-3">
+                            <Link to={link || APP_ROUTES.HOME} className="text-blue-600 text-xs hover:underline flex items-center gap-3">
                                 Checkout the full post <MoveRight className="icon-hover"/>
                             </Link>
                         </div>
@@ -82,11 +87,12 @@ const Safari = () => {
                     </div>
                 ))}
             </div>
+                        )}
         </div>
     </>
   );
 };
 
-const SafariWindow = WindowWrapper(Safari, "safari");
+const SafariWindow = WindowWrapper(Safari, WINDOW_IDS.SAFARI);
 
 export default SafariWindow;
