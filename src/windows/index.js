@@ -1,11 +1,19 @@
-import TerminalWindow from "./Terminal";
-import Safari from "./Safari";
-import BlogArticle from "./BlogArticle";
-import ResumeWindow from "./Resume";
-import Finder from "./Finder";
-import TextFileWindow from "./TextFile";
-import ImageFileWindow from "./ImageFile";
-import Contact from "./Contact";
+import BlogArticle from './BlogArticle';
+import Contact from './Contact';
+import Finder from './Finder';
+import ImageFileWindow from './ImageFile';
+import ResumeWindow from './Resume';
+import Safari from './Safari';
+import TerminalWindow from './Terminal';
+import TextFileWindow from './TextFile';
 
-export { TerminalWindow, BlogArticle, ResumeWindow, Finder, TextFileWindow, ImageFileWindow, Contact };
+export {
+  TerminalWindow,
+  BlogArticle,
+  ResumeWindow,
+  Finder,
+  TextFileWindow,
+  ImageFileWindow,
+  Contact,
+};
 export default TerminalWindow;

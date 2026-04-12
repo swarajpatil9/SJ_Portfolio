@@ -1,10 +1,10 @@
-import useWindowStore from "#store/window";
+import useWindowStore from '#store/window';
 
 const WindowControls = ({ target }) => {
   const closeWindow = useWindowStore((state) => state.closeWindow);
   const minimizeWindow = useWindowStore((state) => state.minimizeWindow);
   const maximizeWindow = useWindowStore((state) => state.maximizeWindow);
-  
+
   const handleClose = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -24,26 +24,14 @@ const WindowControls = ({ target }) => {
   };
 
   return (
-    <div 
-      id="window-controls" 
+    <div
+      id="window-controls"
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
-      <div 
-        className="close" 
-        onClick={handleClose}
-        onMouseDown={(e) => e.stopPropagation()}
-      />
-      <div 
-        className="minimize" 
-        onClick={handleMinimize}
-        onMouseDown={(e) => e.stopPropagation()}
-      />
-      <div 
-        className="maximize" 
-        onClick={handleMaximize}
-        onMouseDown={(e) => e.stopPropagation()}
-      />
+      <div className="close" onClick={handleClose} onMouseDown={(e) => e.stopPropagation()} />
+      <div className="minimize" onClick={handleMinimize} onMouseDown={(e) => e.stopPropagation()} />
+      <div className="maximize" onClick={handleMaximize} onMouseDown={(e) => e.stopPropagation()} />
     </div>
   );
 };

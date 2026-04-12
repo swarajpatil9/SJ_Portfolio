@@ -1,29 +1,40 @@
+import {
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  PanelLeft,
+  Search,
+  Share,
+  Plus,
+  ShieldHalf,
+  Clock,
+  User,
+  Calendar,
+  ArrowLeft,
+} from 'lucide-react';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Copy, PanelLeft, Search, Share, Plus, ShieldHalf, Clock, User, Calendar, ArrowLeft } from 'lucide-react';
-import { blogData } from '#constants/blogData';
+
 import { APP_ROUTES } from '../config/routes';
+
+import { blogData } from '#constants/blogData';
 
 //React Started Content Component
 const ReactStartedContent = () => (
   <>
     {/* Introduction */}
     <section className="mb-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-4 mt-0">
-        Introduction to React
-      </h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-4 mt-0">Introduction to React</h2>
       <p className="text-lg text-gray-700 leading-relaxed mb-4">
-        React is a powerful JavaScript library for building user interfaces, 
-        developed and maintained by Facebook. Since its release in 2013, React 
-        has revolutionized the way developers build web applications, introducing 
-        concepts like component-based architecture and declarative programming 
-        that have become industry standards.
+        React is a powerful JavaScript library for building user interfaces, developed and
+        maintained by Facebook. Since its release in 2013, React has revolutionized the way
+        developers build web applications, introducing concepts like component-based architecture
+        and declarative programming that have become industry standards.
       </p>
       <p className="text-lg text-gray-700 leading-relaxed">
-        In this comprehensive guide, we'll explore the fundamentals of React, 
-        understand why it's become so popular, and build our first React component 
-        together. Whether you're a beginner or looking to refresh your knowledge, 
-        this article will provide you with a solid foundation.
+        In this comprehensive guide, we'll explore the fundamentals of React, understand why it's
+        become so popular, and build our first React component together. Whether you're a beginner
+        or looking to refresh your knowledge, this article will provide you with a solid foundation.
       </p>
     </section>
 
@@ -40,12 +51,10 @@ const ReactStartedContent = () => (
 
     {/* Why React is Popular */}
     <section className="mb-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-4">
-        Why React is Popular
-      </h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-4">Why React is Popular</h2>
       <p className="text-lg text-gray-700 leading-relaxed mb-6">
-        React's popularity isn't accidental. It offers several key advantages 
-        that make it an excellent choice for modern web development:
+        React's popularity isn't accidental. It offers several key advantages that make it an
+        excellent choice for modern web development:
       </p>
 
       <div className="space-y-6 mb-6">
@@ -54,9 +63,8 @@ const ReactStartedContent = () => (
             ⚡ Virtual DOM for Performance
           </h3>
           <p className="text-gray-700 mb-0">
-            React uses a Virtual DOM to efficiently update only the parts of 
-            the page that change, resulting in blazing-fast performance even 
-            for complex applications.
+            React uses a Virtual DOM to efficiently update only the parts of the page that change,
+            resulting in blazing-fast performance even for complex applications.
           </p>
         </div>
 
@@ -65,9 +73,8 @@ const ReactStartedContent = () => (
             🧩 Component-Based Architecture
           </h3>
           <p className="text-gray-700 mb-0">
-            Build encapsulated components that manage their own state, then 
-            compose them to create complex UIs. This promotes code reusability 
-            and maintainability.
+            Build encapsulated components that manage their own state, then compose them to create
+            complex UIs. This promotes code reusability and maintainability.
           </p>
         </div>
 
@@ -76,8 +83,8 @@ const ReactStartedContent = () => (
             🌐 Learn Once, Write Anywhere
           </h3>
           <p className="text-gray-700 mb-0">
-            React's principles apply across platforms. Use React Native for 
-            mobile apps, React for web, and even React for VR experiences.
+            React's principles apply across platforms. Use React Native for mobile apps, React for
+            web, and even React for VR experiences.
           </p>
         </div>
       </div>
@@ -85,13 +92,10 @@ const ReactStartedContent = () => (
 
     {/* Creating First Component */}
     <section className="mb-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-4">
-        Creating Your First Component
-      </h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-4">Creating Your First Component</h2>
       <p className="text-lg text-gray-700 leading-relaxed mb-6">
-        Let's dive into creating a simple React component. A component is 
-        essentially a JavaScript function that returns JSX (JavaScript XML), 
-        which looks similar to HTML.
+        Let's dive into creating a simple React component. A component is essentially a JavaScript
+        function that returns JSX (JavaScript XML), which looks similar to HTML.
       </p>
 
       {/* Code Block */}
@@ -106,7 +110,7 @@ const ReactStartedContent = () => (
         </div>
         <pre className="p-6 overflow-x-auto">
           <code className="text-sm text-gray-100 leading-relaxed">
-{`import React from 'react';
+            {`import React from 'react';
 
 function Welcome(props) {
   return (
@@ -123,8 +127,11 @@ export default Welcome;`}
       </div>
 
       <p className="text-lg text-gray-700 leading-relaxed mb-6">
-        This simple component accepts a <code className="bg-gray-100 px-2 py-1 rounded text-pink-600 text-base font-mono">name</code> prop 
-        and displays a personalized greeting. You can use it like this:
+        This simple component accepts a{' '}
+        <code className="bg-gray-100 px-2 py-1 rounded text-pink-600 text-base font-mono">
+          name
+        </code>{' '}
+        prop and displays a personalized greeting. You can use it like this:
       </p>
     </section>
   </>
@@ -139,16 +146,15 @@ const ModernWebAppsContent = () => (
         The Evolution of Web Development
       </h2>
       <p className="text-lg text-gray-700 leading-relaxed mb-4">
-        Modern web applications have come a long way from static HTML pages. 
-        Today's web apps are dynamic, interactive, and provide experiences that rival 
-        native desktop applications. The shift toward single-page applications (SPAs) 
-        and progressive web apps (PWAs) has transformed how we think about web development.
+        Modern web applications have come a long way from static HTML pages. Today's web apps are
+        dynamic, interactive, and provide experiences that rival native desktop applications. The
+        shift toward single-page applications (SPAs) and progressive web apps (PWAs) has transformed
+        how we think about web development.
       </p>
       <p className="text-lg text-gray-700 leading-relaxed">
-        In this article, we'll explore the key technologies and patterns that 
-        power modern web applications, from build tools to deployment strategies. 
-        You'll learn how to create fast, scalable, and maintainable web applications 
-        that users love.
+        In this article, we'll explore the key technologies and patterns that power modern web
+        applications, from build tools to deployment strategies. You'll learn how to create fast,
+        scalable, and maintainable web applications that users love.
       </p>
     </section>
 
@@ -165,9 +171,7 @@ const ModernWebAppsContent = () => (
 
     {/* Key Technologies */}
     <section className="mb-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-4">
-        Essential Technologies
-      </h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-4">Essential Technologies</h2>
       <p className="text-lg text-gray-700 leading-relaxed mb-6">
         Building modern web apps requires a solid tech stack. Here are the core components:
       </p>
@@ -178,28 +182,24 @@ const ModernWebAppsContent = () => (
             📦 Build Tools & Bundlers
           </h3>
           <p className="text-gray-700 mb-0">
-            Tools like Vite, Webpack, and esbuild optimize your code for production, 
-            enabling features like code splitting, tree shaking, and hot module replacement.
+            Tools like Vite, Webpack, and esbuild optimize your code for production, enabling
+            features like code splitting, tree shaking, and hot module replacement.
           </p>
         </div>
 
         <div className="bg-gray-50 rounded-xl p-6 hover:shadow-md transition-shadow duration-200">
-          <h3 className="text-xl font-semibold text-gray-900 mb-2 mt-0">
-            🎨 Styling Solutions
-          </h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2 mt-0">🎨 Styling Solutions</h3>
           <p className="text-gray-700 mb-0">
-            From Tailwind CSS to CSS-in-JS libraries like styled-components, 
-            modern styling solutions make it easy to create beautiful, responsive interfaces.
+            From Tailwind CSS to CSS-in-JS libraries like styled-components, modern styling
+            solutions make it easy to create beautiful, responsive interfaces.
           </p>
         </div>
 
         <div className="bg-gray-50 rounded-xl p-6 hover:shadow-md transition-shadow duration-200">
-          <h3 className="text-xl font-semibold text-gray-900 mb-2 mt-0">
-            🔄 State Management
-          </h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2 mt-0">🔄 State Management</h3>
           <p className="text-gray-700 mb-0">
-            Libraries like Redux, Zustand, and Recoil help manage complex application 
-            state, making your code more predictable and easier to debug.
+            Libraries like Redux, Zustand, and Recoil help manage complex application state, making
+            your code more predictable and easier to debug.
           </p>
         </div>
       </div>
@@ -207,9 +207,7 @@ const ModernWebAppsContent = () => (
 
     {/* Architecture Patterns */}
     <section className="mb-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-4">
-        Architecture Patterns
-      </h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-4">Architecture Patterns</h2>
       <p className="text-lg text-gray-700 leading-relaxed mb-6">
         Choosing the right architecture pattern is crucial for scalability and maintainability:
       </p>
@@ -227,21 +225,28 @@ const ModernWebAppsContent = () => (
             <span className="text-2xl mr-3">🏗️</span>
             <div>
               <strong className="text-gray-900">Micro-Frontend Architecture</strong>
-              <p className="text-gray-700 mt-1 mb-0">Split your application into smaller, independently deployable parts for better team scalability.</p>
+              <p className="text-gray-700 mt-1 mb-0">
+                Split your application into smaller, independently deployable parts for better team
+                scalability.
+              </p>
             </div>
           </li>
           <li className="flex items-start">
             <span className="text-2xl mr-3">⚡</span>
             <div>
               <strong className="text-gray-900">JAMstack Approach</strong>
-              <p className="text-gray-700 mt-1 mb-0">JavaScript, APIs, and Markup for fast, secure, and scalable web applications.</p>
+              <p className="text-gray-700 mt-1 mb-0">
+                JavaScript, APIs, and Markup for fast, secure, and scalable web applications.
+              </p>
             </div>
           </li>
           <li className="flex items-start">
             <span className="text-2xl mr-3">🔐</span>
             <div>
               <strong className="text-gray-900">Server-Side Rendering</strong>
-              <p className="text-gray-700 mt-1 mb-0">Improve SEO and initial load performance with frameworks like Next.js or Remix.</p>
+              <p className="text-gray-700 mt-1 mb-0">
+                Improve SEO and initial load performance with frameworks like Next.js or Remix.
+              </p>
             </div>
           </li>
         </ul>
@@ -255,19 +260,17 @@ const JSTipsContent = () => (
   <>
     {/* Introduction */}
     <section className="mb-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-4 mt-0">
-        Master JavaScript Like a Pro
-      </h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-4 mt-0">Master JavaScript Like a Pro</h2>
       <p className="text-lg text-gray-700 leading-relaxed mb-4">
-        JavaScript is the backbone of modern web development, and mastering its 
-        nuances can significantly improve your development workflow. From ES6+ features 
-        to performance optimization techniques, there's always something new to learn 
-        in the ever-evolving JavaScript ecosystem.
+        JavaScript is the backbone of modern web development, and mastering its nuances can
+        significantly improve your development workflow. From ES6+ features to performance
+        optimization techniques, there's always something new to learn in the ever-evolving
+        JavaScript ecosystem.
       </p>
       <p className="text-lg text-gray-700 leading-relaxed">
-        This guide compiles essential JavaScript tips and tricks that every 
-        developer should know. Whether you're dealing with array methods, async patterns, 
-        or browser APIs, these techniques will make your code cleaner and more efficient.
+        This guide compiles essential JavaScript tips and tricks that every developer should know.
+        Whether you're dealing with array methods, async patterns, or browser APIs, these techniques
+        will make your code cleaner and more efficient.
       </p>
     </section>
 
@@ -284,9 +287,7 @@ const JSTipsContent = () => (
 
     {/* Array Methods */}
     <section className="mb-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-4">
-        Powerful Array Methods
-      </h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-4">Powerful Array Methods</h2>
       <p className="text-lg text-gray-700 leading-relaxed mb-6">
         Modern JavaScript provides powerful array methods that can replace traditional loops:
       </p>
@@ -303,7 +304,7 @@ const JSTipsContent = () => (
         </div>
         <pre className="p-6 overflow-x-auto">
           <code className="text-sm text-gray-100 leading-relaxed">
-{`// Transform arrays with map
+            {`// Transform arrays with map
 const doubled = [1, 2, 3].map(n => n * 2);
 
 // Filter elements
@@ -324,9 +325,7 @@ const result = [1, 2, 3, 4, 5]
 
     {/* Async Patterns */}
     <section className="mb-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-4">
-        Modern Async Patterns
-      </h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-4">Modern Async Patterns</h2>
       <p className="text-lg text-gray-700 leading-relaxed mb-6">
         Handle asynchronous operations elegantly with async/await:
       </p>
@@ -343,7 +342,7 @@ const result = [1, 2, 3, 4, 5]
         </div>
         <pre className="p-6 overflow-x-auto">
           <code className="text-sm text-gray-100 leading-relaxed">
-{`// Clean async/await syntax
+            {`// Clean async/await syntax
 async function fetchUserData(userId) {
   try {
     const response = await fetch(\`/api/users/\${userId}\`);
@@ -373,38 +372,44 @@ const [users, posts] = await Promise.all([
 
     {/* Modern Features */}
     <section className="mb-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-4">
-        ES6+ Features You Should Use
-      </h2>
-      
+      <h2 className="text-3xl font-bold text-gray-900 mb-4">ES6+ Features You Should Use</h2>
+
       <div className="bg-linear-to-br from-yellow-50 to-orange-50 rounded-xl p-8 mb-6 border border-yellow-100">
         <ul className="space-y-4 mb-0">
           <li className="flex items-start">
             <span className="text-2xl mr-3">📦</span>
             <div>
               <strong className="text-gray-900">Destructuring</strong>
-              <p className="text-gray-700 mt-1 mb-0">Extract values from objects and arrays with clean, concise syntax.</p>
+              <p className="text-gray-700 mt-1 mb-0">
+                Extract values from objects and arrays with clean, concise syntax.
+              </p>
             </div>
           </li>
           <li className="flex items-start">
             <span className="text-2xl mr-3">🔄</span>
             <div>
               <strong className="text-gray-900">Spread & Rest Operators</strong>
-              <p className="text-gray-700 mt-1 mb-0">Manipulate arrays and objects immutably with the ... operator.</p>
+              <p className="text-gray-700 mt-1 mb-0">
+                Manipulate arrays and objects immutably with the ... operator.
+              </p>
             </div>
           </li>
           <li className="flex items-start">
             <span className="text-2xl mr-3">🎯</span>
             <div>
               <strong className="text-gray-900">Optional Chaining & Nullish Coalescing</strong>
-              <p className="text-gray-700 mt-1 mb-0">Safely access nested properties and provide default values.</p>
+              <p className="text-gray-700 mt-1 mb-0">
+                Safely access nested properties and provide default values.
+              </p>
             </div>
           </li>
           <li className="flex items-start">
             <span className="text-2xl mr-3">⚙️</span>
             <div>
               <strong className="text-gray-900">Template Literals</strong>
-              <p className="text-gray-700 mt-1 mb-0">Create dynamic strings with embedded expressions and multiline support.</p>
+              <p className="text-gray-700 mt-1 mb-0">
+                Create dynamic strings with embedded expressions and multiline support.
+              </p>
             </div>
           </li>
         </ul>
@@ -420,7 +425,7 @@ const BlogArticle = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    
+
     // If blog not found, redirect to home
     if (!blog) {
       navigate(APP_ROUTES.HOME);
@@ -438,10 +443,7 @@ const BlogArticle = () => {
         <div className="text-center space-y-3">
           <h2 className="text-xl font-semibold text-gray-800">Article not found</h2>
           <p className="text-sm text-gray-500">Redirecting to home...</p>
-          <button
-            onClick={handleBack}
-            className="text-sm text-blue-600 hover:underline"
-          >
+          <button onClick={handleBack} className="text-sm text-blue-600 hover:underline">
             Go back now
           </button>
         </div>
@@ -458,22 +460,26 @@ const BlogArticle = () => {
           <div id="window-header">
             {/* Traffic Light Buttons */}
             <div className="flex items-center gap-2 shrink-0">
-              <button 
+              <button
                 onClick={handleBack}
                 className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 transition-all duration-200 hover:shadow-lg cursor-pointer"
                 title="Close"
               />
-              <button 
+              <button
                 className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-all duration-200 hover:shadow-lg cursor-pointer"
                 title="Minimize"
               />
-              <button 
+              <button
                 className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600 transition-all duration-200 hover:shadow-lg cursor-pointer"
                 title="Maximize"
               />
             </div>
 
-            <PanelLeft className="ml-10 icon shrink-0" onClick={handleBack} style={{ cursor: 'pointer' }} /> 
+            <PanelLeft
+              className="ml-10 icon shrink-0"
+              onClick={handleBack}
+              style={{ cursor: 'pointer' }}
+            />
 
             <div className="flex items-center gap-1 ml-5 shrink-0">
               <ChevronLeft className="icon" onClick={handleBack} style={{ cursor: 'pointer' }} />
@@ -485,8 +491,8 @@ const BlogArticle = () => {
 
               <div className="search flex-1">
                 <Search className="icon" />
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="Search or enter website name"
                   className="flex-1"
                   readOnly
@@ -507,7 +513,7 @@ const BlogArticle = () => {
             {/* Hero Section */}
             <div className="max-w-3xl mx-auto px-8 sm:px-12 py-16">
               {/* Back Link */}
-              <button 
+              <button
                 onClick={handleBack}
                 className="flex items-center gap-2 text-blue-600 hover:text-blue-700 mb-8 group transition-all duration-200"
               >
@@ -541,15 +547,17 @@ const BlogArticle = () => {
                 {slug === 'react-started' && <ReactStartedContent />}
                 {slug === 'modern-web-apps' && <ModernWebAppsContent />}
                 {slug === 'js-tips' && <JSTipsContent />}
-                
+
                 {/* Common CTA Box */}
                 <section className="mb-12">
                   <div className="bg-linear-to-r from-blue-600 to-purple-600 rounded-xl p-8 text-white text-center mt-12">
-                    <h3 className="text-2xl font-bold mb-3 mt-0">Ready to Build Something Amazing?</h3>
+                    <h3 className="text-2xl font-bold mb-3 mt-0">
+                      Ready to Build Something Amazing?
+                    </h3>
                     <p className="text-blue-100 mb-6">
                       Start building your projects today and join millions of developers worldwide.
                     </p>
-                    <button 
+                    <button
                       onClick={handleBack}
                       className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:shadow-2xl transition-all duration-200 hover:-translate-y-1"
                     >
@@ -581,7 +589,8 @@ const BlogArticle = () => {
         }
 
         code {
-          font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+          font-family:
+            'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
         }
 
         pre {

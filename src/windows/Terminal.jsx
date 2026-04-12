@@ -1,57 +1,60 @@
-import WindowWrapper from '#hoc/WindowWrapper';
 import React from 'react';
-import { techStack } from '#constants/index.js';
-import WindowControls from '#components/WindowControls.jsx';
+
 import { WINDOW_IDS } from '../config/windowIds';
 
+import WindowControls from '#components/WindowControls.jsx';
+import { techStack } from '#constants/index.js';
+import WindowWrapper from '#hoc/WindowWrapper';
 
 const Terminal = () => {
   return (
     <>
-        <div id ="window-header">
-      <WindowControls target={WINDOW_IDS.TERMINAL} />
+      <div id="window-header">
+        <WindowControls target={WINDOW_IDS.TERMINAL} />
         <h2>Tech Stack</h2>
-        </div>
+      </div>
 
-        <div className="techstack">
-        <p> 
-            <span className="font-bold">@swaraj % </span>
-            show tech stack
+      <div className="techstack">
+        <p>
+          <span className="font-bold">@swaraj % </span>
+          show tech stack
         </p>
-        <div className="label"> 
-            <p className="w-32">Category</p>
-            <p>Technologies</p>
+        <div className="label">
+          <p className="w-32">Category</p>
+          <p>Technologies</p>
         </div>
 
-        <ul className = "content">
-          {techStack.map(( {category, items} ) => (
+        <ul className="content">
+          {techStack.map(({ category, items }) => (
             <li key={category}>
               <span className="check">✓</span>
               <h3>{category}</h3>
               <ul>
                 {items.map((item, i) => (
-                  <li key = {i}>{item}{i < items.length - 1 ? "," : ""}</li>
-                ))}  
+                  <li key={i}>
+                    {item}
+                    {i < items.length - 1 ? ',' : ''}
+                  </li>
+                ))}
               </ul>
             </li>
           ))}
         </ul>
         <div className="footnote">
           <p>
-            <span className="check">✓</span> {techStack.length} of {techStack.length} stacks loaded successfully (100%)
-            
+            <span className="check">✓</span> {techStack.length} of {techStack.length} stacks loaded
+            successfully (100%)
           </p>
           <p>
             <span>🚩</span>
             Render time: 6ms
           </p>
-
         </div>
-        </div>
+      </div>
     </>
   );
 };
 
-const TerminalWindow = WindowWrapper(Terminal, WINDOW_IDS.TERMINAL); 
+const TerminalWindow = WindowWrapper(Terminal, WINDOW_IDS.TERMINAL);
 
 export default TerminalWindow;
