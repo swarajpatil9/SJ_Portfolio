@@ -7,6 +7,7 @@ Last updated: 2026-04-09
 This is a React + Vite portfolio app that mimics a macOS desktop experience.
 
 Core UX idea:
+
 - A desktop wallpaper background with draggable app icons.
 - A dock that opens/minimizes windows.
 - Multiple app-like windows (Finder, Safari-like blog list, Terminal-like tech stack, Contact, Resume PDF, file/image viewers).
@@ -24,10 +25,12 @@ Core UX idea:
 ## 3) High-level architecture
 
 Entry and app shell:
+
 - src/main.jsx mounts app.
 - src/App.jsx defines routes.
 
 UI components:
+
 - src/components/Navbar.jsx: top system bar + nav shortcuts.
 - src/components/Dock.jsx: dock icon interactions and window toggles.
 - src/components/Home.jsx: desktop project icons and drag persistence.
@@ -35,21 +38,25 @@ UI components:
 - src/components/WindowControls.jsx: traffic-light controls for each window.
 
 Window system:
+
 - src/hoc/WindowWrapper.jsx: shared behavior for all windows.
   - open/close/minimize/maximize animations
   - z-index focus management
   - drag and resize handling
-- src/windows/*.jsx: app-specific window contents.
+- src/windows/\*.jsx: app-specific window contents.
 
 State layer:
+
 - src/store/window.jsx: central window states and actions.
 - src/store/location.jsx: active Finder location state.
 
 Data/constants:
+
 - src/constants/index.js: dock definitions, location tree, and WINDOW_CONFIG.
 - src/constants/blogData.js: article metadata keyed by slug.
 
 Styling:
+
 - src/index.css contains global Tailwind-driven styles and per-window IDs.
 
 ## 4) Runtime flow summary
@@ -67,6 +74,7 @@ Styling:
 ## 5) Confirmed issues, errors, and risks
 
 Severity legend:
+
 - Critical: currently breaks quality gates or can break runtime behavior.
 - High: strong correctness/portability risk.
 - Medium: user-visible bug or maintainability/perf issue.
@@ -75,6 +83,7 @@ Severity legend:
 ### Critical
 
 1. Lint failure: reading ref.current during render
+
 - File: src/hoc/WindowWrapper.jsx
 - Lines: 291, 292 (eslint output)
 - Problem: customSize.current is read while rendering inline style.
@@ -86,6 +95,7 @@ Severity legend:
 ### High
 
 2. Case-sensitive GSAP Draggable import
+
 - Files:
   - src/components/Home.jsx (line 4)
   - src/hoc/WindowWrapper.jsx (line 6)
@@ -95,6 +105,7 @@ Severity legend:
 - Suggested fix: import from gsap/draggable consistently.
 
 3. Photos app is configured but not implemented/rendered
+
 - Files:
   - src/constants/index.js (dockApps includes photos, WINDOW_CONFIG includes photos)
   - src/App.jsx (no Photos window mounted)
@@ -108,6 +119,7 @@ Severity legend:
 ### Medium
 
 4. Resume always renders page 1
+
 - File: src/windows/Resume.jsx
 - Line: 37
 - Current code: pageNumber={Math.min(1, numPages || 1)}
@@ -115,18 +127,21 @@ Severity legend:
 - Suggested fix: set explicit target page (1) or correct formula depending on intended behavior.
 
 5. Deprecated TypeScript option warning
+
 - File: jsconfig.json
 - Line: 3
 - Problem: baseUrl flagged deprecated for TS 7.
 - Suggested fix: add compiler option ignoreDeprecations: "6.0" now, then migrate config as needed.
 
 6. Production debug logs in window controls
+
 - File: src/components/WindowControls.jsx
 - Lines: 9, 16, 23
 - Problem: console logs fire on every close/minimize/maximize click.
 - Suggested fix: remove logs or guard by environment.
 
 7. Invalid input type value typo
+
 - File: src/windows/Safari.jsx
 - Line: 50
 - Problem: type="text " includes trailing whitespace.
@@ -134,6 +149,7 @@ Severity legend:
 - Suggested fix: change to type="text".
 
 8. Fragile store actions with no missing-key guard
+
 - File: src/store/window.jsx
 - Affected actions: closeWindow, minimizeWindow, unminimizeWindow, maximizeWindow, focusWindow
 - Problem: unlike openWindow, these do not check if the window key exists before mutation.
@@ -143,17 +159,20 @@ Severity legend:
 ### Low
 
 9. Navbar icon alt text interpolation bug
+
 - File: src/components/Navbar.jsx
 - Line: 26
 - Problem: alt={'icon-${id}'} is a literal string, not template interpolation.
 - Suggested fix: alt={`icon-${id}`} or better descriptive alt text.
 
 10. Stale backup source file in repo
+
 - File: src/hoc/WindowWrapper.jsx.bak
 - Problem: duplicate legacy implementation increases confusion during maintenance.
 - Suggested fix: remove if not needed.
 
 11. Bundle size warning in production build
+
 - Source: vite build output
 - Problem: generated JS chunk ~866 kB before gzip warning threshold.
 - Suggested fix:

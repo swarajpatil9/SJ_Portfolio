@@ -1,71 +1,71 @@
-import { INITIAL_Z_INDEX, WINDOW_CONFIG } from '#constants/index.js';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
+import { INITIAL_Z_INDEX, WINDOW_CONFIG } from '#constants/index.js';
+
 const useWindowStore = create(
-    immer((set)  => ({
-    
-        windows: WINDOW_CONFIG,
-        nextZIndex: INITIAL_Z_INDEX + 1,
-        previewWindow: null,
+  immer((set) => ({
+    windows: WINDOW_CONFIG,
+    nextZIndex: INITIAL_Z_INDEX + 1,
+    previewWindow: null,
 
-        setPreviewWindow: (windowKey) => 
-            set((state) => {
-                state.previewWindow = windowKey;
-        }),
+    setPreviewWindow: (windowKey) =>
+      set((state) => {
+        state.previewWindow = windowKey;
+      }),
 
-        openWindow: (windowKey, data = null) => 
-            set((state) => {
-                const window = state.windows[windowKey];
-                if (!window) return;
-                window.isOpen = true;
-                window.isMinimized = false;
-                window.data = data ?? window.data;
-                window.zIndex = state.nextZIndex;
-                state.nextZIndex ++;
-        }),
+    openWindow: (windowKey, data = null) =>
+      set((state) => {
+        const window = state.windows[windowKey];
+        if (!window) return;
+        window.isOpen = true;
+        window.isMinimized = false;
+        window.data = data ?? window.data;
+        window.zIndex = state.nextZIndex;
+        state.nextZIndex++;
+      }),
 
-        closeWindow: (windowKey) => 
-            set((state) => {
-                const window = state.windows[windowKey];
-                if (!window) return;
-                window.isOpen = false;
-                window.isMinimized = false;
-                window.data = null;
-                window.zIndex = INITIAL_Z_INDEX;  
-        }),
+    closeWindow: (windowKey) =>
+      set((state) => {
+        const window = state.windows[windowKey];
+        if (!window) return;
+        window.isOpen = false;
+        window.isMinimized = false;
+        window.data = null;
+        window.zIndex = INITIAL_Z_INDEX;
+      }),
 
-        minimizeWindow: (windowKey) => 
-            set((state) => {
-                const window = state.windows[windowKey];
-                if (!window) return;
-                window.isMinimized = true;
-        }),
+    minimizeWindow: (windowKey) =>
+      set((state) => {
+        const window = state.windows[windowKey];
+        if (!window) return;
+        window.isMinimized = true;
+      }),
 
-        unminimizeWindow: (windowKey) => 
-            set((state) => {
-                const window = state.windows[windowKey];
-                if (!window) return;
-                window.isMinimized = false;
-                window.zIndex = state.nextZIndex;
-                state.nextZIndex++;
-        }),
+    unminimizeWindow: (windowKey) =>
+      set((state) => {
+        const window = state.windows[windowKey];
+        if (!window) return;
+        window.isMinimized = false;
+        window.zIndex = state.nextZIndex;
+        state.nextZIndex++;
+      }),
 
-        maximizeWindow: (windowKey) => 
-            set((state) => {
-                const window = state.windows[windowKey];
-                if (!window) return;
-                window.isMaximized = !window.isMaximized;
-        }),
+    maximizeWindow: (windowKey) =>
+      set((state) => {
+        const window = state.windows[windowKey];
+        if (!window) return;
+        window.isMaximized = !window.isMaximized;
+      }),
 
-        focusWindow: (windowKey) => 
-            set((state) => {
-                const window = state.windows[windowKey];
-                if (!window) return;
-                window.zIndex = state.nextZIndex;
-                state.nextZIndex++;
-        }),   
-    })),
+    focusWindow: (windowKey) =>
+      set((state) => {
+        const window = state.windows[windowKey];
+        if (!window) return;
+        window.zIndex = state.nextZIndex;
+        state.nextZIndex++;
+      }),
+  }))
 );
 
 export default useWindowStore;

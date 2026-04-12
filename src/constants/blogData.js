@@ -15,9 +15,9 @@ export const blogData = {
         content2: `In this comprehensive guide, we'll explore the fundamentals of React, 
           understand why it's become so popular, and build our first React component 
           together. Whether you're a beginner or looking to refresh your knowledge, 
-          this article will provide you with a solid foundation.`
-      }
-    ]
+          this article will provide you with a solid foundation.`,
+      },
+    ],
   },
   'modern-web-apps': {
     title: 'Building Modern Web Apps',
@@ -34,9 +34,9 @@ export const blogData = {
         content2: `In this article, we'll explore the key technologies and patterns that 
           power modern web applications, from build tools to deployment strategies. 
           You'll learn how to create fast, scalable, and maintainable web applications 
-          that users love.`
-      }
-    ]
+          that users love.`,
+      },
+    ],
   },
   'js-tips': {
     title: 'JavaScript Tips and Tricks',
@@ -52,8 +52,8 @@ export const blogData = {
           in the ever-evolving JavaScript ecosystem.`,
         content2: `This guide compiles essential JavaScript tips and tricks that every 
           developer should know. Whether you're dealing with array methods, async patterns, 
-          or browser APIs, these techniques will make your code cleaner and more efficient.`
-      }
-    ]
-  }
+          or browser APIs, these techniques will make your code cleaner and more efficient.`,
+      },
+    ],
+  },
 };
