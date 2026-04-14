@@ -16,8 +16,11 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { APP_ROUTES } from '../config/routes';
+import { isValidBlogSlug, isValidRoute } from '../utils/validation.js';
 
 import { blogData } from '#constants/blogData';
+
+/** @typedef {import('#types/models.js').BlogArticleData} BlogArticleData */
 
 //React Started Content Component
 const ReactStartedContent = () => (
@@ -420,20 +423,23 @@ const [users, posts] = await Promise.all([
 
 const BlogArticle = () => {
   const navigate = useNavigate();
+  /** @type {{ slug?: string }} */
   const { slug } = useParams();
-  const blog = blogData[slug];
+  const homeRoute = isValidRoute(APP_ROUTES.HOME) ? APP_ROUTES.HOME : '/';
+  /** @type {BlogArticleData | undefined} */
+  const blog = slug && isValidBlogSlug(slug) ? blogData[slug] : undefined;
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
     // If blog not found, redirect to home
     if (!blog) {
-      navigate(APP_ROUTES.HOME);
+      navigate(homeRoute);
     }
-  }, [blog, navigate]);
+  }, [blog, homeRoute, navigate]);
 
   const handleBack = () => {
-    navigate(APP_ROUTES.HOME);
+    navigate(homeRoute);
   };
 
   // Render safe fallback while redirecting
@@ -572,7 +578,7 @@ const BlogArticle = () => {
       </div>
 
       {/* Custom Styles */}
-      <style jsx>{`
+      <style>{`
         @keyframes fadeIn {
           from {
             opacity: 0;

@@ -1,22 +1,31 @@
 import useWindowStore from '#store/window';
 
+/** @typedef {import('#types/models.js').WindowId} WindowId */
+
+/**
+ * @param {{ target: WindowId }} props
+ */
 const WindowControls = ({ target }) => {
+
   const closeWindow = useWindowStore((state) => state.closeWindow);
   const minimizeWindow = useWindowStore((state) => state.minimizeWindow);
   const maximizeWindow = useWindowStore((state) => state.maximizeWindow);
 
+  /** @param {React.MouseEvent<HTMLDivElement>} e */
   const handleClose = (e) => {
     e.preventDefault();
     e.stopPropagation();
     closeWindow(target);
   };
 
+  /** @param {React.MouseEvent<HTMLDivElement>} e */
   const handleMinimize = (e) => {
     e.preventDefault();
     e.stopPropagation();
     minimizeWindow(target);
   };
 
+  /** @param {React.MouseEvent<HTMLDivElement>} e */
   const handleMaximize = (e) => {
     e.preventDefault();
     e.stopPropagation();

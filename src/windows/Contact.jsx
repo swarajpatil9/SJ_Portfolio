@@ -5,6 +5,8 @@ import { WINDOW_IDS } from '../config/windowIds';
 import WindowControls from '#components/WindowControls.jsx';
 import WindowWrapper from '#hoc/WindowWrapper';
 
+/** @typedef {{ id: number, bg: string, link: string, icon: string, text: string }} SocialItem */
+
 const Contact = () => {
   return (
     <>
@@ -20,7 +22,7 @@ const Contact = () => {
       </div>
 
       <ul>
-        {socials.map(({ id, bg, link, icon, text }) => (
+        {(/** @type {SocialItem[]} */ (socials)).map(({ id, bg, link, icon, text }) => (
           <li key={id} style={{ backgroundColor: bg }}>
             <a href={link} target="_blank" rel="noopener noreferrer" title={text}>
               <img src={icon} alt={text} className="size-5" />

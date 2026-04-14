@@ -2,10 +2,14 @@ import { WINDOW_IDS } from '../config/windowIds';
 
 import WindowControls from '#components/WindowControls.jsx';
 import WindowWrapper from '#hoc/WindowWrapper';
-import useWindowStore from '#store/window.jsx';
+import { useWindow } from '#store/hooks.js';
+
+/** @typedef {import('#types/models.js').LocationNode} LocationNode */
 
 const TextFile = () => {
-  const file = useWindowStore((state) => state.windows.txtfile.data);
+  const textWindow = useWindow(WINDOW_IDS.TEXT_FILE);
+  /** @type {LocationNode | null} */
+  const file = textWindow?.data ?? null;
   if (!file) {
     return (
       <>

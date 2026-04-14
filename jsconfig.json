@@ -1,10 +1,25 @@
 {
   "compilerOptions": {
     "ignoreDeprecations": "6.0",
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true,
+    "maxNodeModuleJsDepth": 0,
+    "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "#*": ["src/*"]
+      "#*": ["src/*"],
+      "gsap": ["src/types/gsap-types.d.ts"],
+      "gsap/*": ["src/types/gsap-types.d.ts"],
+      "@gsap/react": ["src/types/gsap-types.d.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

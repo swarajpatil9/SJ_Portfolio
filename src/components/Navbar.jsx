@@ -3,8 +3,15 @@ import dayjs from 'dayjs';
 import { navIcons, navLinks } from '#constants/index.js';
 import useWindowStore from '#store/window';
 
+/** @typedef {import('#types/models.js').WindowId} WindowId */
+
 const Navbar = () => {
   const openWindow = useWindowStore((state) => state.openWindow);
+
+  /** @param {WindowId} windowId */
+  const handleOpenWindow = (windowId) => {
+    openWindow(windowId);
+  };
 
   return (
     <nav>
@@ -14,7 +21,7 @@ const Navbar = () => {
 
         <ul>
           {navLinks.map(({ id, name, type }) => (
-            <li key={id} onClick={() => openWindow(type)}>
+            <li key={id} onClick={() => handleOpenWindow(/** @type {WindowId} */ (type))}>
               <p>{name}</p>
             </li>
           ))}
