@@ -11,13 +11,14 @@ const TextFile = () => {
   /** @type {LocationNode | null} */
   const file = textWindow?.data ?? null;
   if (!file) {
+    console.warn('Missing data:', WINDOW_IDS.TEXT_FILE);
     return (
       <>
         <div id="window-header">
           <WindowControls target={WINDOW_IDS.TEXT_FILE} />
           <h2>Text Viewer</h2>
         </div>
-        <div className="bg-white p-6 text-sm text-gray-500">No document selected.</div>
+        <div className="window-empty-state">Pick a text file from Finder to view it here.</div>
       </>
     );
   }
@@ -48,7 +49,7 @@ const TextFile = () => {
         ))}
 
         {paragraphs.length === 0 ? (
-          <p className="text-sm text-gray-500">No content is available for this file.</p>
+          <p className="window-empty-inline">No content is available for this file yet.</p>
         ) : null}
       </div>
     </>

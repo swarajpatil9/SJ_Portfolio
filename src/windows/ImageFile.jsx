@@ -11,13 +11,14 @@ const ImageFile = () => {
   /** @type {LocationNode | null} */
   const file = imageWindow?.data ?? null;
   if (!file) {
+    console.warn('Missing data:', WINDOW_IDS.IMAGE_FILE);
     return (
       <>
         <div id="window-header">
           <WindowControls target={WINDOW_IDS.IMAGE_FILE} />
           <h2>Image Viewer</h2>
         </div>
-        <div className="bg-white p-4 text-sm text-gray-500">No image selected.</div>
+        <div className="window-empty-state">Pick an image file from Finder to preview it here.</div>
       </>
     );
   }
@@ -41,7 +42,7 @@ const ImageFile = () => {
           }}
         />
         {!file.imageUrl ? (
-          <p className="text-sm text-gray-500">Image source is unavailable.</p>
+          <p className="window-empty-inline">Image source is unavailable for this file.</p>
         ) : null}
       </div>
     </>

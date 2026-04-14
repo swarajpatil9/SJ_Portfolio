@@ -2,6 +2,8 @@
 /** @typedef {import('#types/models.js').BlogPost} BlogPost */
 /** @typedef {import('#types/models.js').LocationNode} LocationNode */
 
+import { WINDOW_IDS } from '../config/windowIds.js';
+
 /**
  * @template {Record<string, unknown>} T
  * @param {T} value
@@ -572,6 +574,15 @@ const WINDOW_CONFIG = deepFreeze({
     isMaximized: false,
     isMinimized: false,
   },
+});
+
+Object.keys(WINDOW_CONFIG).forEach((id) => {
+  const isMapped = Object.values(WINDOW_IDS).includes(
+    /** @type {import('#types/models.js').WindowId} */ (id)
+  );
+  if (!isMapped) {
+    throw new Error(`Missing WINDOW_ID mapping for window config key: ${id}`);
+  }
 });
 
 /** @typedef {keyof typeof WINDOW_CONFIG} WindowId */

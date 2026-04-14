@@ -1,7 +1,8 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { Dock, Home, Navbar, Welcome, ErrorBoundary, LoadingFallback } from '#components';
+import { useActiveWindow, useWindowActions, useWindows } from '#store/hooks';
 
 import { APP_MESSAGES } from './config/appConstants';
 import { APP_ROUTES } from './config/routes';
@@ -67,9 +68,81 @@ const HomePage = () => {
 };
 
 const App = () => {
+  const [shortcutToast, setShortcutToast] = React.useState('');
+  const activeWindow = useActiveWindow();
+  const { closeWindow, minimizeWindow, focusWindow } = useWindowActions();
+  const windows = useWindows();
+
+  const showShortcutToast = (message) => {
+    setShortcutToast(message);
+    window.setTimeout(() => setShortcutToast(''), 1800);
+  };
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      const activeElement = document.activeElement;
+      const isTypingContext =
+        activeElement instanceof HTMLInputElement ||
+        activeElement instanceof HTMLTextAreaElement ||
+        activeElement instanceof HTMLSelectElement ||
+        Boolean(activeElement?.getAttribute('contenteditable'));
+
+      if (isTypingContext) return;
+
+      const activeId = activeWindow?.id;
+      const withModifier = event.metaKey || event.ctrlKey;
+
+      if (event.key === 'Escape' && activeId) {
+        event.preventDefault();
+        closeWindow(activeId);
+        return;
+      }
+
+      if (!withModifier || !activeId) return;
+
+      const key = event.key.toLowerCase();
+
+      if (key === 'w') {
+        event.preventDefault();
+        closeWindow(activeId);
+        return;
+      }
+
+      if (key === 'm') {
+        event.preventDefault();
+        minimizeWindow(activeId);
+        return;
+      }
+
+      if (key === 'tab') {
+        event.preventDefault();
+        const visible = Object.entries(windows)
+          .filter(([, state]) => state.isOpen && !state.isMinimized)
+          .sort((a, b) => b[1].zIndex - a[1].zIndex)
+          .map(([id]) => id);
+
+        if (visible.length < 2) {
+          showShortcutToast('Use Alt+Tab or click dock');
+          return;
+        }
+        const currentIndex = visible.indexOf(activeId);
+        const nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % visible.length;
+        focusWindow(/** @type {import('#types/models.js').WindowId} */ (visible[nextIndex]));
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [activeWindow?.id, closeWindow, focusWindow, minimizeWindow, windows]);
+
   return (
     <Router>
       <main>
+        {shortcutToast ? (
+          <div className="shortcut-toast" role="status" aria-live="polite">
+            {shortcutToast}
+          </div>
+        ) : null}
         <Routes>
           <Route path={APP_ROUTES.HOME} element={<HomePage />} />
           <Route

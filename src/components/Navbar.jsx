@@ -1,12 +1,12 @@
 import dayjs from 'dayjs';
 
 import { navIcons, navLinks } from '#constants/index.js';
-import useWindowStore from '#store/window';
+import { useWindowActions } from '#store/hooks';
 
 /** @typedef {import('#types/models.js').WindowId} WindowId */
 
 const Navbar = () => {
-  const openWindow = useWindowStore((state) => state.openWindow);
+  const { openWindow } = useWindowActions();
 
   /** @param {WindowId} windowId */
   const handleOpenWindow = (windowId) => {

@@ -3,14 +3,19 @@ import gsap from 'gsap';
 import { useRef } from 'react';
 import { Tooltip } from 'react-tooltip';
 
+import { MOTION } from '../config/motion.js';
 import { dockApps } from '#constants/index.js';
 import { useDockState } from '#store/hooks.js';
 
 /** @typedef {import('#types/models.js').DockApp} DockApp */
 /** @typedef {import('#types/models.js').WindowId} WindowId */
 
+/** @type {import('gsap').GSAP} */
+const gsapApi = gsap;
+
 const Dock = () => {
-  const { openWindow, minimizeWindow, setPreviewWindow, unminimizeWindow, windows } = useDockState();
+  const { openWindow, minimizeWindow, setPreviewWindow, unminimizeWindow, windows } =
+    useDockState();
   const dockRef = useRef(/** @type {HTMLDivElement | null} */ (null));
 
   useGSAP(() => {
@@ -29,9 +34,9 @@ const Dock = () => {
         const distance = Math.abs(mouseX - center);
         const intensity = Math.exp(-(distance ** 3) / 20000);
 
-        gsap.to(icon, {
-          duration: 0.2,
-          ease: 'power1.out',
+        gsapApi.to(icon, {
+          duration: MOTION.FAST,
+          ease: MOTION.EASE.STANDARD_OUT,
           scale: 1 + 0.25 * intensity,
           y: -15 * intensity,
         });
@@ -47,9 +52,9 @@ const Dock = () => {
 
     const resetIcon = () => {
       icons.forEach((icon) =>
-        gsap.to(icon, {
-          duration: 0.3,
-          ease: 'power1.out',
+        gsapApi.to(icon, {
+          duration: MOTION.NORMAL,
+          ease: MOTION.EASE.STANDARD_OUT,
           scale: 1,
           y: 0,
         })
@@ -108,6 +113,7 @@ const Dock = () => {
               <button
                 type="button"
                 className="dock-icon"
+                data-window-id={id}
                 aria-label={name}
                 data-tooltip-id="dock-tooltip"
                 data-tooltip-content={name}

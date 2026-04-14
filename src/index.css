@@ -63,7 +63,24 @@ body {
 
 @layer components {
   .icon {
-    @apply p-1 hover:bg-gray-200 rounded hover:cursor-default;
+    @apply p-1 hover:bg-gray-200 rounded hover:cursor-default transition-colors duration-200;
+  }
+
+  .loading-state {
+    @apply p-4 text-sm text-gray-500 inline-flex items-center gap-3;
+  }
+
+  .loading-spinner {
+    @apply size-4 rounded-full border-2 border-gray-300 border-t-gray-600 inline-block;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .window-empty-state {
+    @apply bg-white p-6 text-sm text-gray-500 flex items-center justify-center min-h-28 text-center;
+  }
+
+  .window-empty-inline {
+    @apply text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3;
   }
 
   #welcome {
@@ -106,7 +123,7 @@ body {
     }
 
     .dock-icon {
-      @apply size-14 3xl:size-20 cursor-pointer;
+      @apply size-14 3xl:size-20 cursor-pointer transition-transform duration-200 will-change-transform;
 
       img {
         @apply object-cover object-center;
@@ -119,6 +136,10 @@ body {
 
     div {
       @apply size-3 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center;
+    }
+
+    button {
+      @apply size-3 rounded-full cursor-pointer transition-all duration-200 flex items-center justify-center outline-none;
 
       &::before {
         content: '';
@@ -127,6 +148,14 @@ body {
 
       &:hover::before {
         @apply opacity-100;
+      }
+
+      &:focus-visible {
+        @apply ring-2 ring-offset-2 ring-slate-500;
+      }
+
+      &:active {
+        @apply scale-95;
       }
     }
 
@@ -174,8 +203,25 @@ body {
     @apply flex flex-nowrap items-center justify-between px-4 py-3 rounded-t-lg bg-gray-50 border-b border-gray-200 select-none text-sm text-gray-400;
 
     h2 {
-      @apply cursor-move;
+      @apply cursor-grab;
     }
+  }
+
+  .app-window {
+    will-change: transform, opacity;
+    transition:
+      box-shadow 180ms ease,
+      opacity 180ms ease;
+    position: absolute;
+  }
+
+  .app-window::after {
+    content: '';
+    @apply absolute bottom-2 right-2 size-3 rounded-sm border-r-2 border-b-2 border-gray-300/70 pointer-events-none;
+  }
+
+  .shortcut-toast {
+    @apply fixed bottom-24 left-1/2 -translate-x-1/2 z-[10000] px-4 py-2 rounded-lg text-xs font-medium text-white bg-black/75 backdrop-blur-sm shadow-lg;
   }
 
   #safari {
@@ -445,16 +491,22 @@ body {
 
     ul {
       li {
-        @apply absolute z-0 select-none flex items-center flex-col;
+        @apply absolute z-0 select-none flex items-center flex-col cursor-pointer transition-transform duration-150;
 
         img {
-          @apply group-hover:bg-gray-950/10 p-1 rounded-md;
+          @apply group-hover:bg-gray-950/10 p-1 rounded-md transition-colors duration-150;
         }
 
         p {
-          @apply text-sm text-white text-center px-1 rounded-md group-hover:bg-blue-500 transition-colors max-w-40;
+          @apply text-sm text-white text-center px-1 rounded-md group-hover:bg-blue-500 transition-colors duration-150 max-w-40;
         }
       }
     }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

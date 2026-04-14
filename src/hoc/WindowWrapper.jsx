@@ -4,12 +4,24 @@ import { Draggable } from 'gsap/draggable';
 import { useRef } from 'react';
 import React, { useLayoutEffect, useState } from 'react';
 
-import useWindowStore from '#store/window';
+import { MOTION } from '../config/motion.js';
+import { useActiveWindow, usePreviewWindow, useWindow, useWindowActions } from '../store/hooks.js';
 
 /** @typedef {import('#types/models.js').WindowId} WindowId */
 /** @typedef {import('react').ComponentType<any>} AnyComponent */
 
-gsap.registerPlugin(Draggable);
+/** @type {import('gsap').GSAP} */
+const gsapApi = gsap;
+/** @type {import('gsap/draggable').DraggablePlugin} */
+const draggablePlugin = Draggable;
+
+try {
+  gsapApi.registerPlugin(Draggable);
+} catch (error) {
+  if (import.meta.env.DEV) {
+    console.error('Failed to register Draggable plugin in WindowWrapper', error);
+  }
+}
 
 /**
  * @param {AnyComponent} Component
@@ -18,9 +30,10 @@ gsap.registerPlugin(Draggable);
 const WindowWrapper = (Component, windowKey) => {
   /** @param {Record<string, unknown>} props */
   const Wrapped = (props) => {
-    const focusWindow = useWindowStore((state) => state.focusWindow);
-    const previewWindow = useWindowStore((state) => state.previewWindow);
-    const windowState = useWindowStore((state) => state.windows?.[windowKey]);
+    const { focusWindow } = useWindowActions();
+    const previewWindow = usePreviewWindow();
+    const activeWindow = useActiveWindow();
+    const windowState = useWindow(windowKey);
     const hasWindowState = Boolean(windowState);
     const { isOpen, zIndex, isMaximized, isMinimized } = windowState ?? {
       isOpen: false,
@@ -36,37 +49,71 @@ const WindowWrapper = (Component, windowKey) => {
 
     const isPreview = previewWindow === windowKey && !isOpen;
     const shouldShow = isOpen && !isMinimized;
+    const isActive = activeWindow?.id === windowKey && shouldShow;
+
+    const getDockTargetOffset = () => {
+      const el = ref.current;
+      if (!el) return { x: 0, y: window.innerHeight - 100 };
+
+      const dockButton = document.querySelector(`#dock .dock-icon[data-window-id="${windowKey}"]`);
+      if (!dockButton) return { x: 0, y: window.innerHeight - 100 };
+
+      const windowRect = el.getBoundingClientRect();
+      const dockRect = dockButton.getBoundingClientRect();
+      const windowCenterX = windowRect.left + windowRect.width / 2;
+      const windowCenterY = windowRect.top + windowRect.height / 2;
+      const dockCenterX = dockRect.left + dockRect.width / 2;
+      const dockCenterY = dockRect.top + dockRect.height / 2;
+
+      return { x: dockCenterX - windowCenterX, y: dockCenterY - windowCenterY };
+    };
 
     useGSAP(() => {
       const el = ref.current;
       if (!el) return;
 
       if (shouldShow) {
+        const target = getDockTargetOffset();
         if (wasMinimized.current) {
           // Restore from minimize - animate from dock
-          gsap.fromTo(
+          gsapApi.fromTo(
             el,
-            { scale: 0.2, opacity: 0, y: window.innerHeight - 100, display: 'block' },
-            { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+            { scale: 0.2, opacity: 0, x: target.x, y: target.y, display: 'block' },
+            {
+              scale: 1,
+              opacity: 1,
+              x: 0,
+              y: 0,
+              duration: MOTION.SLOW,
+              ease: MOTION.EASE.STANDARD_OUT,
+            }
           );
           wasMinimized.current = false;
         } else {
           // Regular open animation
-          gsap.fromTo(
+          gsapApi.fromTo(
             el,
             { scale: 0.8, opacity: 0, y: 40, display: 'block' },
-            { scale: 1, opacity: 1, y: 0, duration: 0.3, ease: 'power3.out' }
+            {
+              scale: 1,
+              opacity: 1,
+              y: 0,
+              duration: MOTION.NORMAL,
+              ease: MOTION.EASE.EMPHASIS_OUT,
+            }
           );
         }
         wasOpen.current = true;
       } else if (wasOpen.current && isMinimized) {
+        const target = getDockTargetOffset();
         // Minimize animation - scale down to dock
-        gsap.to(el, {
+        gsapApi.to(el, {
           scale: 0.2,
           opacity: 0,
-          y: window.innerHeight - 100,
-          duration: 0.4,
-          ease: 'power2.in',
+          x: target.x,
+          y: target.y,
+          duration: MOTION.SLOW,
+          ease: MOTION.EASE.STANDARD_IN,
           onComplete: () => {
             el.style.display = 'none';
             wasMinimized.current = true;
@@ -74,12 +121,12 @@ const WindowWrapper = (Component, windowKey) => {
         });
       } else if (wasOpen.current && !isOpen) {
         // Close animation
-        gsap.to(el, {
+        gsapApi.to(el, {
           scale: 0.8,
           opacity: 0,
           y: 40,
-          duration: 0.3,
-          ease: 'power3.in',
+          duration: MOTION.NORMAL,
+          ease: MOTION.EASE.EMPHASIS_IN,
           onComplete: () => {
             el.style.display = 'none';
             wasMinimized.current = false;
@@ -93,10 +140,13 @@ const WindowWrapper = (Component, windowKey) => {
       if (!el) return;
 
       if (isPreview) {
-        // Show preview instantly without animation
+        // Show preview with a subtle fade for less abrupt transitions.
         el.style.display = 'block';
-        el.style.opacity = '0.9';
-        el.style.transform = 'scale(1) translateY(0)';
+        gsapApi.to(el, {
+          opacity: 0.9,
+          duration: MOTION.FAST,
+          ease: MOTION.EASE.STANDARD_OUT,
+        });
         el.style.pointerEvents = 'none'; // Disable interaction in preview mode
       } else if (!isOpen) {
         // Hide preview instantly if not open
@@ -116,12 +166,29 @@ const WindowWrapper = (Component, windowKey) => {
 
       // Only make draggable when window is open AND not maximized
       if (!isMaximized) {
-        const draggableInstance = Draggable.create(el, {
-          trigger: header || el,
-          onPress: () => focusWindow(windowKey),
-          bounds: 'body',
-          dragClickables: false,
-        })[0];
+        let draggableInstance = null;
+
+        try {
+          draggableInstance = draggablePlugin.create(el, {
+            trigger: header || el,
+            onPress: () => focusWindow(windowKey),
+            onDragStart: () => {
+              if (header instanceof HTMLElement) header.style.cursor = 'grabbing';
+            },
+            onDragEnd: () => {
+              if (header instanceof HTMLElement) header.style.cursor = 'grab';
+            },
+            bounds: 'body',
+            edgeResistance: 0.85,
+            dragResistance: 0.05,
+            dragClickables: false,
+          })[0];
+        } catch (error) {
+          if (import.meta.env.DEV) {
+            console.error(`Failed to initialize draggable window: ${windowKey}`, error);
+          }
+          return;
+        }
 
         return () => {
           // Cleanup: destroy draggable instance
@@ -129,6 +196,21 @@ const WindowWrapper = (Component, windowKey) => {
         };
       }
     }, [isOpen, isMaximized]);
+
+    useGSAP(() => {
+      const el = ref.current;
+      if (!el || !isOpen || isMinimized) return;
+
+      gsapApi.to(el, {
+        scale: isActive ? 1.012 : 1,
+        opacity: isActive ? 1 : 0.96,
+        boxShadow: isActive
+          ? '0 24px 48px rgba(15, 23, 42, 0.24)'
+          : '0 14px 30px rgba(15, 23, 42, 0.16)',
+        duration: MOTION.FAST,
+        ease: MOTION.EASE.STANDARD_OUT,
+      });
+    }, [isActive, isOpen, isMinimized]);
 
     useLayoutEffect(() => {
       const el = ref.current;
@@ -324,7 +406,7 @@ const WindowWrapper = (Component, windowKey) => {
                 height: `${size.height}px`,
               }),
         }}
-        className={`absolute ${isMaximized ? 'w-full! h-full!' : ''}`}
+        className={`app-window absolute ${isMaximized ? 'w-full! h-full!' : ''}`}
         onClick={() => focusWindow(windowKey)}
       >
         <Component {...props} />

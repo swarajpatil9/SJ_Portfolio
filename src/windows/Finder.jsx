@@ -8,13 +8,13 @@ import { WINDOW_IDS } from '../config/windowIds';
 import { locations } from '#constants/index.js';
 import WindowWrapper from '#hoc/WindowWrapper';
 import useLocationStore from '#store/location.jsx';
-import useWindowStore from '#store/window.jsx';
+import { useWindowActions } from '#store/hooks.js';
 
 /** @typedef {import('#types/models.js').LocationNode} LocationNode */
 /** @typedef {import('#types/models.js').WindowId} WindowId */
 
 const Finder = () => {
-  const openWindow = useWindowStore((state) => state.openWindow);
+  const { openWindow } = useWindowActions();
   const activeLocation = useLocationStore((state) => state.activeLocation);
   const setActiveLocation = useLocationStore((state) => state.setActiveLocation);
 
@@ -53,6 +53,19 @@ const Finder = () => {
     </div>
   );
 
+  if (!activeLocation) {
+    console.warn('Missing data:', 'activeLocation');
+    return (
+      <>
+        <div id="window-header">
+          <WindowControls target={WINDOW_IDS.FINDER} />
+          <Search className="icon" />
+        </div>
+        <div className="window-empty-state">Location data is unavailable.</div>
+      </>
+    );
+  }
+
   return (
     <>
       <div id="window-header">
@@ -67,10 +80,10 @@ const Finder = () => {
         </div>
 
         <ul className="content">
-          {(activeLocation?.children ?? []).length === 0 ? (
+          {(activeLocation.children ?? []).length === 0 ? (
             <li className="text-sm text-gray-500 p-4">No items in this folder.</li>
           ) : (
-            (activeLocation?.children ?? []).map((item) => (
+            (activeLocation.children ?? []).map((item) => (
               <li key={item.id} className={item.position} onClick={() => openItem(item)}>
                 <img src={item.icon} alt={item.name} className="w-6" />
                 <p>{item.name}</p>

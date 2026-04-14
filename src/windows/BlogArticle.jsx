@@ -16,7 +16,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { APP_ROUTES } from '../config/routes';
-import { isValidBlogSlug, isValidRoute } from '../utils/validation.js';
+import { isValidBlogSlug, isValidRoute } from '../utils/validators.js';
 
 import { blogData } from '#constants/blogData';
 
@@ -444,6 +444,7 @@ const BlogArticle = () => {
 
   // Render safe fallback while redirecting
   if (!blog) {
+    console.warn('Missing data:', slug ?? 'unknown-blog-slug');
     return (
       <div className="min-h-screen flex items-center justify-center p-6">
         <div className="text-center space-y-3">
