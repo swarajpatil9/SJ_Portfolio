@@ -1,3 +1,6 @@
+/** @typedef {import('#types/models.js').BlogArticleData} BlogArticleData */
+
+/** @type {Record<string, BlogArticleData>} */
 export const blogData = {
   'react-started': {
     title: 'Getting Started with React',

@@ -18,6 +18,9 @@ import { WINDOW_IDS } from '../config/windowIds';
 import WindowControls from '#components/WindowControls.jsx';
 import WindowWrapper from '#hoc/WindowWrapper';
 
+/** @typedef {import('#types/models.js').BlogPost} BlogPost */
+
+/** @type {BlogPost[]} */
 const blogPosts = [
   {
     id: 1,

@@ -7,6 +7,7 @@ const FONT_WEIGHTS = {
   title: { min: 400, max: 900, default: 400 },
 };
 
+/** @param {string} text @param {string} className @param {number=} baseWeight */
 const renderText = (text, className, baseWeight = 400) => {
   return [...text].map((char, i) => (
     <span key={i} className={className} style={{ fontVariationSettings: `'wght' ${baseWeight}` }}>
@@ -15,12 +16,17 @@ const renderText = (text, className, baseWeight = 400) => {
   ));
 };
 
+/**
+ * @param {HTMLElement | null} container
+ * @param {'subtitle' | 'title'} type
+ */
 const setupTextHover = (container, type) => {
   if (!container) return () => {};
 
   const letters = container.querySelectorAll('span');
   const { min, max, default: base } = FONT_WEIGHTS[type];
 
+  /** @param {Element} letter @param {number} weight @param {number=} duration */
   const animateLetter = (letter, weight, duration = 0.25) => {
     return gsap.to(letter, {
       duration,
@@ -29,6 +35,7 @@ const setupTextHover = (container, type) => {
     });
   };
 
+  /** @param {MouseEvent} event */
   const handleMouseMove = (event) => {
     const { left } = container.getBoundingClientRect();
     const mouseX = event.clientX - left;

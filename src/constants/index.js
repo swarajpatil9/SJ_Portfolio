@@ -1,3 +1,26 @@
+/** @typedef {import('#types/models.js').DockApp} DockApp */
+/** @typedef {import('#types/models.js').BlogPost} BlogPost */
+/** @typedef {import('#types/models.js').LocationNode} LocationNode */
+
+/**
+ * @template {Record<string, unknown>} T
+ * @param {T} value
+ * @returns {Readonly<T>}
+ */
+const deepFreeze = (value) => {
+  if (value && typeof value === 'object' && !Object.isFrozen(value)) {
+    Object.freeze(value);
+    Object.keys(value).forEach((key) => {
+      const nested = value[key];
+      if (nested && typeof nested === 'object') {
+        deepFreeze(/** @type {Record<string, unknown>} */ (nested));
+      }
+    });
+  }
+
+  return value;
+};
+
 const navLinks = [
   {
     id: 1,
@@ -35,7 +58,8 @@ const navIcons = [
   },
 ];
 
-const dockApps = [
+/** @type {readonly DockApp[]} */
+const DOCK_CONFIG = Object.freeze([
   {
     id: 'finder',
     name: 'Portfolio', // was "Finder"
@@ -72,8 +96,12 @@ const dockApps = [
     icon: 'trash.png',
     canOpen: false,
   },
-];
+]);
 
+/** @type {readonly DockApp[]} */
+const dockApps = DOCK_CONFIG;
+
+/** @type {BlogPost[]} */
 const blogPosts = [
   {
     id: 1,
@@ -205,6 +233,7 @@ const gallery = [
 
 export { navLinks, navIcons, dockApps, blogPosts, techStack, socials, photosLinks, gallery };
 
+/** @type {LocationNode} */
 const WORK_LOCATION = {
   id: 1,
   type: 'work',
@@ -373,6 +402,7 @@ const WORK_LOCATION = {
   ],
 };
 
+/** @type {LocationNode} */
 const ABOUT_LOCATION = {
   id: 2,
   type: 'about',
@@ -426,6 +456,7 @@ const ABOUT_LOCATION = {
   ],
 };
 
+/** @type {LocationNode} */
 const RESUME_LOCATION = {
   id: 3,
   type: 'resume',
@@ -445,6 +476,7 @@ const RESUME_LOCATION = {
   ],
 };
 
+/** @type {LocationNode} */
 const TRASH_LOCATION = {
   id: 4,
   type: 'trash',
@@ -473,6 +505,7 @@ const TRASH_LOCATION = {
   ],
 };
 
+/** @type {Record<'work' | 'about' | 'resume' | 'trash', LocationNode>} */
 export const locations = {
   work: WORK_LOCATION,
   about: ABOUT_LOCATION,
@@ -482,7 +515,7 @@ export const locations = {
 
 const INITIAL_Z_INDEX = 1000;
 
-const WINDOW_CONFIG = {
+const WINDOW_CONFIG = deepFreeze({
   finder: {
     isOpen: false,
     zIndex: INITIAL_Z_INDEX,
@@ -539,6 +572,8 @@ const WINDOW_CONFIG = {
     isMaximized: false,
     isMinimized: false,
   },
-};
+});
 
-export { INITIAL_Z_INDEX, WINDOW_CONFIG };
+/** @typedef {keyof typeof WINDOW_CONFIG} WindowId */
+
+export { INITIAL_Z_INDEX, WINDOW_CONFIG, DOCK_CONFIG };

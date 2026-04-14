@@ -6,9 +6,17 @@ import React, { useLayoutEffect, useState } from 'react';
 
 import useWindowStore from '#store/window';
 
+/** @typedef {import('#types/models.js').WindowId} WindowId */
+/** @typedef {import('react').ComponentType<any>} AnyComponent */
+
 gsap.registerPlugin(Draggable);
 
+/**
+ * @param {AnyComponent} Component
+ * @param {WindowId} windowKey
+ */
 const WindowWrapper = (Component, windowKey) => {
+  /** @param {Record<string, unknown>} props */
   const Wrapped = (props) => {
     const focusWindow = useWindowStore((state) => state.focusWindow);
     const previewWindow = useWindowStore((state) => state.previewWindow);
@@ -20,7 +28,7 @@ const WindowWrapper = (Component, windowKey) => {
       isMaximized: false,
       isMinimized: false,
     };
-    const ref = useRef(null);
+    const ref = useRef(/** @type {HTMLElement | null} */ (null));
     const wasOpen = useRef(false);
     const wasMinimized = useRef(false);
     const [size, setSize] = useState({ width: 600, height: 400 });
@@ -146,6 +154,7 @@ const WindowWrapper = (Component, windowKey) => {
       let startLeft = 0,
         startTop = 0;
 
+      /** @param {MouseEvent} e */
       const getResizeDirection = (e) => {
         const rect = el.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -168,6 +177,7 @@ const WindowWrapper = (Component, windowKey) => {
         return '';
       };
 
+      /** @param {string} direction */
       const getCursor = (direction) => {
         const cursors = {
           n: 'ns-resize',
@@ -182,6 +192,7 @@ const WindowWrapper = (Component, windowKey) => {
         return cursors[direction] || '';
       };
 
+      /** @param {MouseEvent} e */
       const handleMouseMove = (e) => {
         if (!isResizing) {
           // Only check for resize direction if mouse is over the element
@@ -234,6 +245,7 @@ const WindowWrapper = (Component, windowKey) => {
         customPosition.current = { x: newLeft, y: newTop };
       };
 
+      /** @param {MouseEvent} e */
       const handleMouseDown = (e) => {
         const direction = getResizeDirection(e);
         if (!direction) return;

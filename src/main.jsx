@@ -5,16 +5,22 @@ import './index.css';
 import App from './App.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ErrorBoundary
-      fallback={
-        <div className="p-4 text-sm text-gray-600">
-          The application encountered an unexpected error.
-        </div>
-      }
-    >
-      <App />
-    </ErrorBoundary>
-  </StrictMode>
-);
+ const rootElement = document.getElementById('root');
+
+ if (!rootElement) {
+   throw new Error('Root element not found');
+ }
+
+ createRoot(rootElement).render(
+   <StrictMode>
+     <ErrorBoundary
+       fallback={
+         <div className="p-4 text-sm text-gray-600">
+           The application encountered an unexpected error.
+         </div>
+       }
+     >
+       <App />
+     </ErrorBoundary>
+   </StrictMode>
+ );

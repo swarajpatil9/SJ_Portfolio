@@ -1,8 +1,22 @@
 import React from 'react';
 
+/**
+ * @typedef {Object} ErrorBoundaryProps
+ * @property {React.ReactNode} children
+ * @property {React.ReactNode=} fallback
+ * @property {Array<string | number | boolean | null | undefined>=} resetKeys
+ */
+
+/**
+ * @typedef {Object} ErrorBoundaryState
+ * @property {boolean} hasError
+ */
+
 class ErrorBoundary extends React.Component {
+  /** @param {ErrorBoundaryProps} props */
   constructor(props) {
     super(props);
+    /** @type {ErrorBoundaryState} */
     this.state = { hasError: false };
   }
 
@@ -10,12 +24,14 @@ class ErrorBoundary extends React.Component {
     return { hasError: true };
   }
 
+  /** @param {Error} error @param {React.ErrorInfo} errorInfo */
   componentDidCatch(error, errorInfo) {
     if (import.meta.env.DEV) {
       console.error('ErrorBoundary caught error', error, errorInfo);
     }
   }
 
+  /** @param {ErrorBoundaryProps} prevProps */
   componentDidUpdate(prevProps) {
     const { resetKeys = [] } = this.props;
     if (this.state.hasError && prevProps.resetKeys !== resetKeys) {

@@ -4,15 +4,14 @@ import { useRef } from 'react';
 import { Tooltip } from 'react-tooltip';
 
 import { dockApps } from '#constants/index.js';
-import useWindowStore from '#store/window.jsx';
+import { useDockState } from '#store/hooks.js';
+
+/** @typedef {import('#types/models.js').DockApp} DockApp */
+/** @typedef {import('#types/models.js').WindowId} WindowId */
 
 const Dock = () => {
-  const openWindow = useWindowStore((state) => state.openWindow);
-  const minimizeWindow = useWindowStore((state) => state.minimizeWindow);
-  const setPreviewWindow = useWindowStore((state) => state.setPreviewWindow);
-  const unminimizeWindow = useWindowStore((state) => state.unminimizeWindow);
-  const windows = useWindowStore((state) => state.windows);
-  const dockRef = useRef(null);
+  const { openWindow, minimizeWindow, setPreviewWindow, unminimizeWindow, windows } = useDockState();
+  const dockRef = useRef(/** @type {HTMLDivElement | null} */ (null));
 
   useGSAP(() => {
     const dock = dockRef.current;
@@ -20,6 +19,7 @@ const Dock = () => {
 
     const icons = dock.querySelectorAll('.dock-icon');
 
+    /** @param {number} mouseX */
     const animateIcons = (mouseX) => {
       const { left } = dock.getBoundingClientRect();
 
@@ -38,6 +38,7 @@ const Dock = () => {
       });
     };
 
+    /** @param {MouseEvent} event */
     const handleMouseMove = (event) => {
       const { left } = dock.getBoundingClientRect();
 
@@ -63,24 +64,28 @@ const Dock = () => {
     };
   }, []);
 
+  /** @param {Pick<DockApp, 'id' | 'canOpen'>} app */
   const toggleApp = (app) => {
-    if (!app.canOpen) return;
+    if (!app.canOpen || app.id === 'trash') return;
 
-    const windowState = windows?.[app.id];
+    const appId = /** @type {WindowId} */ (app.id);
+
+    const windowState = windows?.[appId];
     if (!windowState) return;
 
     if (windowState.isOpen && !windowState.isMinimized) {
       // Window is open and visible - minimize it
-      minimizeWindow(app.id);
+      minimizeWindow(appId);
     } else if (windowState.isOpen && windowState.isMinimized) {
       // Window is minimized - restore it
-      unminimizeWindow(app.id);
+      unminimizeWindow(appId);
     } else {
       // Window is closed - open it
-      openWindow(app.id);
+      openWindow(appId);
     }
   };
 
+  /** @param {WindowId} appId @param {boolean} canOpen */
   const handleMouseEnter = (appId, canOpen) => {
     if (!canOpen) return;
     setPreviewWindow(appId);
@@ -109,7 +114,10 @@ const Dock = () => {
                 data-tooltip-delay-show={150}
                 disabled={!canOpen}
                 onClick={() => toggleApp({ id, canOpen })}
-                onMouseEnter={() => handleMouseEnter(id, canOpen)}
+                onMouseEnter={() => {
+                  if (id === 'trash') return;
+                  handleMouseEnter(/** @type {WindowId} */ (id), canOpen);
+                }}
                 onMouseLeave={handleMouseLeave}
               >
                 <img
