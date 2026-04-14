@@ -7,14 +7,25 @@ import { locations } from '#constants';
 import { WINDOW_IDS } from '../config/windowIds.js';
 
 import useLocationStore from '#store/location';
-import useWindowStore from '#store/window';
+import { useWindowActions } from '#store/hooks';
 
 /** @typedef {import('#types/models.js').LocationNode} LocationNode */
 
 /** @typedef {{ x: number, y: number }} Position */
 /** @typedef {Record<string, Position>} PositionMap */
 
-gsap.registerPlugin(Draggable);
+/** @type {import('gsap').GSAP} */
+const gsapApi = gsap;
+/** @type {import('gsap/draggable').DraggablePlugin} */
+const draggablePlugin = Draggable;
+
+try {
+  gsapApi.registerPlugin(Draggable);
+} catch (error) {
+  if (import.meta.env.DEV) {
+    console.error('Failed to register Draggable plugin in Home', error);
+  }
+}
 
 /** @type {LocationNode[]} */
 const projects = locations.work?.children ?? [];
@@ -42,7 +53,7 @@ const savePosition = (projectId, x, y) => {
 };
 
 const Home = () => {
-  const openWindow = useWindowStore((state) => state.openWindow);
+  const { openWindow } = useWindowActions();
   const setActiveLocation = useLocationStore((state) => state.setActiveLocation);
 
   /** @param {LocationNode} project */
@@ -53,31 +64,40 @@ const Home = () => {
 
   useGSAP(() => {
     const savedPositions = getSavedPositions();
-    const draggables = Draggable.create('.desktop-folder', {
-      bounds: 'body',
-      dragClickables: false,
-      /** @this {{ target: HTMLElement }} */
-      onPress() {
-        this.target.style.zIndex = '20';
-      },
-      /** @this {{ target: HTMLElement }} */
-      onRelease() {
-        this.target.style.zIndex = '0';
-      },
-      /** @this {{ target: HTMLElement, x: number, y: number }} */
-      onDragEnd() {
-        const { projectId } = this.target.dataset;
-        if (!projectId) return;
-        savePosition(projectId, this.x, this.y);
-      },
-    });
+    let draggables = [];
+
+    try {
+      draggables = draggablePlugin.create('.desktop-folder', {
+        bounds: 'body',
+        dragClickables: false,
+        /** @this {{ target: HTMLElement }} */
+        onPress() {
+          this.target.style.zIndex = '20';
+        },
+        /** @this {{ target: HTMLElement }} */
+        onRelease() {
+          this.target.style.zIndex = '0';
+        },
+        /** @this {{ target: HTMLElement, x: number, y: number }} */
+        onDragEnd() {
+          const { projectId } = this.target.dataset;
+          if (!projectId) return;
+          savePosition(projectId, this.x, this.y);
+        },
+      });
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Failed to initialize desktop draggable items', error);
+      }
+      return () => {};
+    }
 
     draggables.forEach((draggable) => {
       const { projectId } = draggable.target.dataset;
       const saved = projectId ? savedPositions[projectId] : null;
 
       if (!saved) return;
-      gsap.set(draggable.target, { x: saved.x, y: saved.y });
+      gsapApi.set(draggable.target, { x: saved.x, y: saved.y });
       draggable.update();
     });
 
@@ -94,7 +114,16 @@ const Home = () => {
             key={project.id}
             data-project-id={project.id}
             className={clsx('group desktop-folder', project.position)}
+            role="button"
+            tabIndex={0}
+            aria-label={`Open ${project.name}`}
             onDoubleClick={() => openProject(project)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openProject(project);
+              }
+            }}
           >
             <img src="/images/folder.png" alt={project.name} />
             <p>{project.name}</p>

@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
+import { createWindowId } from '../utils/validators.js';
+
 import { INITIAL_Z_INDEX, WINDOW_CONFIG } from '#constants/index.js';
-import { isValidWindowId } from '../utils/validation.js';
 
 /** @typedef {import('#types/models.js').WindowId} WindowId */
 /** @typedef {import('#types/models.js').LocationNode} LocationNode */
@@ -25,14 +26,15 @@ const useWindowStore = create(
     /** @param {WindowId | null} windowKey */
     setPreviewWindow: (windowKey) =>
       set((state) => {
-        state.previewWindow = windowKey && isValidWindowId(windowKey) ? windowKey : null;
+        state.previewWindow = createWindowId(windowKey);
       }),
 
     /** @param {WindowId} windowKey @param {LocationNode | null=} data */
     openWindow: (windowKey, data = null) =>
       set((state) => {
-        if (!isValidWindowId(windowKey)) return;
-        const window = state.windows[windowKey];
+        const id = createWindowId(windowKey);
+        if (!id) return;
+        const window = state.windows[id];
         if (!window) return;
         window.isOpen = true;
         window.isMinimized = false;
@@ -44,8 +46,9 @@ const useWindowStore = create(
     /** @param {WindowId} windowKey */
     closeWindow: (windowKey) =>
       set((state) => {
-        if (!isValidWindowId(windowKey)) return;
-        const window = state.windows[windowKey];
+        const id = createWindowId(windowKey);
+        if (!id) return;
+        const window = state.windows[id];
         if (!window) return;
         window.isOpen = false;
         window.isMinimized = false;
@@ -56,8 +59,9 @@ const useWindowStore = create(
     /** @param {WindowId} windowKey */
     minimizeWindow: (windowKey) =>
       set((state) => {
-        if (!isValidWindowId(windowKey)) return;
-        const window = state.windows[windowKey];
+        const id = createWindowId(windowKey);
+        if (!id) return;
+        const window = state.windows[id];
         if (!window) return;
         window.isMinimized = true;
       }),
@@ -65,8 +69,9 @@ const useWindowStore = create(
     /** @param {WindowId} windowKey */
     unminimizeWindow: (windowKey) =>
       set((state) => {
-        if (!isValidWindowId(windowKey)) return;
-        const window = state.windows[windowKey];
+        const id = createWindowId(windowKey);
+        if (!id) return;
+        const window = state.windows[id];
         if (!window) return;
         window.isMinimized = false;
         window.zIndex = state.nextZIndex;
@@ -76,8 +81,9 @@ const useWindowStore = create(
     /** @param {WindowId} windowKey */
     maximizeWindow: (windowKey) =>
       set((state) => {
-        if (!isValidWindowId(windowKey)) return;
-        const window = state.windows[windowKey];
+        const id = createWindowId(windowKey);
+        if (!id) return;
+        const window = state.windows[id];
         if (!window) return;
         window.isMaximized = !window.isMaximized;
       }),
@@ -85,8 +91,9 @@ const useWindowStore = create(
     /** @param {WindowId} windowKey */
     focusWindow: (windowKey) =>
       set((state) => {
-        if (!isValidWindowId(windowKey)) return;
-        const window = state.windows[windowKey];
+        const id = createWindowId(windowKey);
+        if (!id) return;
+        const window = state.windows[id];
         if (!window) return;
         window.zIndex = state.nextZIndex;
         state.nextZIndex++;

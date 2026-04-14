@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Shared JSDoc type models for app state, config, and content.
  */

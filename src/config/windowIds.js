@@ -8,6 +8,7 @@
  * TEXT_FILE: Extract<WindowId, 'txtfile'>,
  * IMAGE_FILE: Extract<WindowId, 'imgfile'>,
  * CONTACT: Extract<WindowId, 'contact'>,
+ * PHOTOS: Extract<WindowId, 'photos'>,
  * }} */
 export const WINDOW_IDS = {
   TERMINAL: 'terminal',
@@ -17,4 +18,5 @@ export const WINDOW_IDS = {
   TEXT_FILE: 'txtfile',
   IMAGE_FILE: 'imgfile',
   CONTACT: 'contact',
+  PHOTOS: 'photos',
 };
