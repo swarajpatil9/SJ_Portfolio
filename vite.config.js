@@ -22,29 +22,16 @@ export default defineConfig(({ mode }) => {
           template: 'treemap',
         }),
     ].filter(Boolean),
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            if (id.includes('node_modules')) {
-              if (id.includes('react-pdf') || id.includes('pdfjs-dist')) return 'pdf';
-              if (id.includes('gsap')) return 'animations';
-              if (
-                id.includes('/react/') ||
-                id.includes('/react-dom/') ||
-                id.includes('/scheduler/')
-              )
-                return 'react';
-              return 'vendor';
-            }
-            if (id.includes('/src/windows/')) return 'windows';
-          },
-        },
-      },
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      setupFiles: './src/test/setup.js',
+      css: true,
     },
     resolve: {
       alias: {
         '#components': resolve(dirname(fileURLToPath(import.meta.url)), 'src/components'),
+        '#config': resolve(dirname(fileURLToPath(import.meta.url)), 'src/config'),
         '#constants': resolve(dirname(fileURLToPath(import.meta.url)), 'src/constants'),
         '#store': resolve(dirname(fileURLToPath(import.meta.url)), 'src/store'),
         '#hoc': resolve(dirname(fileURLToPath(import.meta.url)), 'src/hoc'),

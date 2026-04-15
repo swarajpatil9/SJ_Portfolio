@@ -84,3 +84,15 @@ export const blogData = {
     ],
   },
 };
+
+const missingBlogContent = blogCatalog
+  .map(({ slug }) => slug)
+  .filter((slug) => !Object.prototype.hasOwnProperty.call(blogData, slug));
+
+if (missingBlogContent.length > 0) {
+  const message = `Missing blogData entries for slugs: ${missingBlogContent.join(', ')}`;
+  if (import.meta.env.DEV) {
+    throw new Error(message);
+  }
+  console.error(message);
+}

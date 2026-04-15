@@ -1,10 +1,13 @@
 import React, { Suspense, lazy, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 import { Dock, Home, Navbar, Welcome, ErrorBoundary, LoadingFallback } from '#components';
 
 import { APP_MESSAGES } from './config/appConstants';
 import { APP_ROUTES } from './config/routes';
+import { applySeoMeta } from './utils/seo.js';
+import { createWindowShortcutHandler } from './utils/shortcuts.js';
+import { trackPageView } from './utils/telemetry.js';
 
 import { useActiveWindow, useWindowActions, useWindows } from '#store/hooks';
 
@@ -35,6 +38,35 @@ const NotFoundPage = () => {
       </div>
     </div>
   );
+};
+
+const RouteEffects = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackPageView(location.pathname);
+
+    if (location.pathname.startsWith('/blog/')) return;
+
+    if (location.pathname === APP_ROUTES.HOME) {
+      applySeoMeta({
+        title: 'Swaraj Patil | Frontend Engineer Portfolio',
+        description:
+          'Explore a production-grade React portfolio with macOS-style UX, architecture highlights, and technical blog content.',
+        urlPath: APP_ROUTES.HOME,
+        image: '/images/wallpaper.png',
+      });
+      return;
+    }
+
+    applySeoMeta({
+      title: 'Page not found | Swaraj Patil',
+      description: 'The requested page could not be found.',
+      urlPath: location.pathname,
+    });
+  }, [location.pathname]);
+
+  return null;
 };
 
 const HomePage = () => {
@@ -100,57 +132,18 @@ const App = () => {
   };
 
   useEffect(() => {
-    const onKeyDown = (event) => {
-      const activeElement = document.activeElement;
-      const isTypingContext =
-        activeElement instanceof HTMLInputElement ||
-        activeElement instanceof HTMLTextAreaElement ||
-        activeElement instanceof HTMLSelectElement ||
-        Boolean(activeElement?.getAttribute('contenteditable'));
-
-      if (isTypingContext) return;
-
-      const activeId = activeWindow?.id;
-      const withModifier = event.metaKey || event.ctrlKey;
-
-      if (event.key === 'Escape' && activeId) {
-        event.preventDefault();
-        closeWindow(activeId);
-        return;
-      }
-
-      if (!withModifier || !activeId) return;
-
-      const key = event.key.toLowerCase();
-
-      if (key === 'w') {
-        event.preventDefault();
-        closeWindow(activeId);
-        return;
-      }
-
-      if (key === 'm') {
-        event.preventDefault();
-        minimizeWindow(activeId);
-        return;
-      }
-
-      if (key === 'tab') {
-        event.preventDefault();
-        const visible = Object.entries(windows)
+    const onKeyDown = createWindowShortcutHandler({
+      getActiveWindowId: () => activeWindow?.id ?? null,
+      getVisibleWindowIds: () =>
+        Object.entries(windows)
           .filter(([, state]) => state.isOpen && !state.isMinimized)
           .sort((a, b) => b[1].zIndex - a[1].zIndex)
-          .map(([id]) => id);
-
-        if (visible.length < 2) {
-          showShortcutToast('Use Alt+Tab or click dock');
-          return;
-        }
-        const currentIndex = visible.indexOf(activeId);
-        const nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % visible.length;
-        focusWindow(/** @type {import('#types/models.js').WindowId} */ (visible[nextIndex]));
-      }
-    };
+          .map(([id]) => id),
+      closeWindow,
+      minimizeWindow,
+      focusWindow,
+      showShortcutToast,
+    });
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -159,6 +152,7 @@ const App = () => {
   return (
     <Router>
       <main>
+        <RouteEffects />
         {shortcutToast ? (
           <div className="shortcut-toast" role="status" aria-live="polite">
             {shortcutToast}

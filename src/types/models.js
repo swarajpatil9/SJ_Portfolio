@@ -80,6 +80,8 @@
  * @typedef {Object} AppEnv
  * @property {string} resumeFile
  * @property {string} pdfWorkerSrc
+ * @property {string} siteUrl
+ * @property {string=} analyticsId
  */
 
 /**

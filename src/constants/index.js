@@ -477,12 +477,12 @@ const TRASH_LOCATION = {
 };
 
 /** @type {Record<'work' | 'about' | 'resume' | 'trash', LocationNode>} */
-export const locations = {
+export const locations = deepFreeze({
   work: WORK_LOCATION,
   about: ABOUT_LOCATION,
   resume: RESUME_LOCATION,
   trash: TRASH_LOCATION,
-};
+});
 
 const INITIAL_Z_INDEX = 1000;
 
@@ -550,7 +550,11 @@ Object.keys(WINDOW_CONFIG).forEach((id) => {
     /** @type {import('#types/models.js').WindowId} */ (id)
   );
   if (!isMapped) {
-    throw new Error(`Missing WINDOW_ID mapping for window config key: ${id}`);
+    const message = `Missing WINDOW_ID mapping for window config key: ${id}`;
+    if (import.meta.env.DEV) {
+      throw new Error(message);
+    }
+    console.error(message);
   }
 });
 

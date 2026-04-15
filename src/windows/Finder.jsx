@@ -4,6 +4,7 @@ import { Search } from 'lucide-react';
 import { WindowControls } from '#components';
 
 import { WINDOW_IDS } from '../config/windowIds';
+import { resolveFinderAction } from '../utils/finderActions.js';
 
 import { locations } from '#constants/index.js';
 import WindowWrapper from '#hoc/WindowWrapper';
@@ -11,31 +12,26 @@ import { useWindowActions } from '#store/hooks.js';
 import useLocationStore from '#store/location.jsx';
 
 /** @typedef {import('#types/models.js').LocationNode} LocationNode */
-/** @typedef {import('#types/models.js').WindowId} WindowId */
 
 const Finder = () => {
   const { openWindow } = useWindowActions();
   const activeLocation = useLocationStore((state) => state.activeLocation);
   const setActiveLocation = useLocationStore((state) => state.setActiveLocation);
-  const fileWindowMap = {
-    txt: WINDOW_IDS.TEXT_FILE,
-    img: WINDOW_IDS.IMAGE_FILE,
-  };
 
   /** @param {LocationNode} item */
   const openItem = (item) => {
-    if (item.kind === 'folder') return setActiveLocation(item);
+    const action = resolveFinderAction(item);
 
-    const fileType = item.fileType ?? '';
-    if (fileType === 'pdf') return openWindow(WINDOW_IDS.RESUME);
-
-    if ((fileType === 'fig' || fileType === 'url') && typeof item.href === 'string') {
-      return window.open(item.href, '_blank', 'noopener,noreferrer');
+    if (action.type === 'navigate-folder' && action.payload) {
+      return setActiveLocation(action.payload);
     }
 
-    const windowKey = fileWindowMap[fileType];
-    if (windowKey) {
-      return openWindow(/** @type {WindowId} */ (windowKey), item);
+    if (action.type === 'open-link' && action.href) {
+      return window.open(action.href, '_blank', 'noopener,noreferrer');
+    }
+
+    if (action.type === 'open-window' && action.windowId) {
+      return openWindow(action.windowId, action.payload ?? null);
     }
 
     return null;
