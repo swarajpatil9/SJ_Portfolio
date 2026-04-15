@@ -2,10 +2,11 @@ import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { Dock, Home, Navbar, Welcome, ErrorBoundary, LoadingFallback } from '#components';
-import { useActiveWindow, useWindowActions, useWindows } from '#store/hooks';
 
 import { APP_MESSAGES } from './config/appConstants';
 import { APP_ROUTES } from './config/routes';
+
+import { useActiveWindow, useWindowActions, useWindows } from '#store/hooks';
 
 const TerminalWindow = lazy(() => import('#windows/Terminal'));
 const Safari = lazy(() => import('#windows/Safari'));
@@ -14,12 +15,27 @@ const Finder = lazy(() => import('#windows/Finder'));
 const TextFileWindow = lazy(() => import('#windows/TextFile'));
 const ImageFileWindow = lazy(() => import('#windows/ImageFile'));
 const Contact = lazy(() => import('#windows/Contact'));
+const Photos = lazy(() => import('#windows/Photos'));
 const BlogArticle = lazy(() => import('#windows/BlogArticle'));
 
 const windowFallback = <LoadingFallback message={APP_MESSAGES.LOADING_WINDOW} />;
 const windowErrorFallback = (
   <div className="p-4 text-sm text-gray-600">{APP_MESSAGES.WINDOW_ERROR}</div>
 );
+
+const NotFoundPage = () => {
+  return (
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="text-center space-y-3">
+        <h1 className="text-2xl font-semibold text-gray-800">Page not found</h1>
+        <p className="text-sm text-gray-500">The page you requested does not exist.</p>
+        <a href={APP_ROUTES.HOME} className="text-sm text-blue-600 hover:underline">
+          Go to home
+        </a>
+      </div>
+    </div>
+  );
+};
 
 const HomePage = () => {
   return (
@@ -60,6 +76,11 @@ const HomePage = () => {
       <ErrorBoundary fallback={windowErrorFallback}>
         <Suspense fallback={windowFallback}>
           <Contact />
+        </Suspense>
+      </ErrorBoundary>
+      <ErrorBoundary fallback={windowErrorFallback}>
+        <Suspense fallback={windowFallback}>
+          <Photos />
         </Suspense>
       </ErrorBoundary>
       <Home />
@@ -157,6 +178,7 @@ const App = () => {
               </ErrorBoundary>
             }
           />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
     </Router>

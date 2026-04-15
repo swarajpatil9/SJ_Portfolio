@@ -1,4 +1,5 @@
 import { APP_ROUTES } from '../config/routes.js';
+
 import { blogData } from '#constants/blogData.js';
 import { WINDOW_CONFIG } from '#constants/index.js';
 
