@@ -1,7 +1,8 @@
-import useWindowStore from './window.jsx';
 import { useShallow } from 'zustand/react/shallow';
 
 import { isValidWindowId } from '../utils/validators.js';
+
+import useWindowStore from './window.jsx';
 
 /** @typedef {import('#types/models.js').WindowId} WindowId */
 /** @typedef {import('#types/models.js').WindowState} WindowState */

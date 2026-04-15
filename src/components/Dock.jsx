@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { Tooltip } from 'react-tooltip';
 
 import { MOTION } from '../config/motion.js';
+
 import { dockApps } from '#constants/index.js';
 import { useDockState } from '#store/hooks.js';
 
@@ -71,7 +72,7 @@ const Dock = () => {
 
   /** @param {Pick<DockApp, 'id' | 'canOpen'>} app */
   const toggleApp = (app) => {
-    if (!app.canOpen || app.id === 'trash') return;
+    if (!app.canOpen) return;
 
     const appId = /** @type {WindowId} */ (app.id);
 
@@ -121,7 +122,6 @@ const Dock = () => {
                 disabled={!canOpen}
                 onClick={() => toggleApp({ id, canOpen })}
                 onMouseEnter={() => {
-                  if (id === 'trash') return;
                   handleMouseEnter(/** @type {WindowId} */ (id), canOpen);
                 }}
                 onMouseLeave={handleMouseLeave}

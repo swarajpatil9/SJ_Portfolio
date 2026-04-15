@@ -431,27 +431,23 @@ const BlogArticle = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    // If blog not found, redirect to home
-    if (!blog) {
-      navigate(homeRoute);
-    }
-  }, [blog, homeRoute, navigate]);
+  }, []);
 
   const handleBack = () => {
     navigate(homeRoute);
   };
 
-  // Render safe fallback while redirecting
   if (!blog) {
     console.warn('Missing data:', slug ?? 'unknown-blog-slug');
     return (
       <div className="min-h-screen flex items-center justify-center p-6">
         <div className="text-center space-y-3">
           <h2 className="text-xl font-semibold text-gray-800">Article not found</h2>
-          <p className="text-sm text-gray-500">Redirecting to home...</p>
+          <p className="text-sm text-gray-500">
+            The requested article does not exist or has been removed.
+          </p>
           <button onClick={handleBack} className="text-sm text-blue-600 hover:underline">
-            Go back now
+            Back to home
           </button>
         </div>
       </div>
@@ -472,13 +468,13 @@ const BlogArticle = () => {
                 className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 transition-all duration-200 hover:shadow-lg cursor-pointer"
                 title="Close"
               />
-              <button
-                className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-all duration-200 hover:shadow-lg cursor-pointer"
-                title="Minimize"
+              <span
+                className="w-3 h-3 rounded-full bg-yellow-500/80"
+                title="Minimize unavailable in article view"
               />
-              <button
-                className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600 transition-all duration-200 hover:shadow-lg cursor-pointer"
-                title="Maximize"
+              <span
+                className="w-3 h-3 rounded-full bg-green-500/80"
+                title="Maximize unavailable in article view"
               />
             </div>
 

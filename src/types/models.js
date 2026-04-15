@@ -31,7 +31,7 @@
 
 /**
  * @typedef {Object} DockApp
- * @property {WindowId | 'trash'} id
+ * @property {WindowId} id
  * @property {string} name
  * @property {string} icon
  * @property {boolean} canOpen
@@ -60,6 +60,14 @@
  * @property {string} author
  * @property {string} readTime
  * @property {BlogArticleSection[]} sections
+ */
+
+/**
+ * @typedef {Object} BlogCatalogEntry
+ * @property {string} slug
+ * @property {string} title
+ * @property {string} date
+ * @property {string} image
  */
 
 /**

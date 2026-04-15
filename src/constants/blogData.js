@@ -1,5 +1,29 @@
 /** @typedef {import('#types/models.js').BlogArticleData} BlogArticleData */
 
+/** @typedef {import('#types/models.js').BlogCatalogEntry} BlogCatalogEntry */
+
+/** @type {readonly BlogCatalogEntry[]} */
+export const blogCatalog = Object.freeze([
+  {
+    slug: 'react-started',
+    title: 'Getting Started with React',
+    date: 'March 1, 2026',
+    image: '/images/blog1.png',
+  },
+  {
+    slug: 'modern-web-apps',
+    title: 'Building Modern Web Apps',
+    date: 'February 15, 2026',
+    image: '/images/blog2.png',
+  },
+  {
+    slug: 'js-tips',
+    title: 'JavaScript Tips and Tricks',
+    date: 'January 20, 2026',
+    image: '/images/blog3.png',
+  },
+]);
+
 /** @type {Record<string, BlogArticleData>} */
 export const blogData = {
   'react-started': {

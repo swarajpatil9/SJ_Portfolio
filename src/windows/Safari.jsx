@@ -16,34 +16,8 @@ import { APP_ROUTES } from '../config/routes';
 import { WINDOW_IDS } from '../config/windowIds';
 
 import WindowControls from '#components/WindowControls.jsx';
+import { blogCatalog } from '#constants/blogData.js';
 import WindowWrapper from '#hoc/WindowWrapper';
-
-/** @typedef {import('#types/models.js').BlogPost} BlogPost */
-
-/** @type {BlogPost[]} */
-const blogPosts = [
-  {
-    id: 1,
-    image: '/images/blog1.png',
-    title: 'Getting Started with React',
-    date: 'March 1, 2026',
-    link: '/blog/react-started',
-  },
-  {
-    id: 2,
-    image: '/images/blog2.png',
-    title: 'Building Modern Web Apps',
-    date: 'February 15, 2026',
-    link: '/blog/modern-web-apps',
-  },
-  {
-    id: 3,
-    image: '/images/blog3.png',
-    title: 'JavaScript Tips and Tricks',
-    date: 'January 20, 2026',
-    link: '/blog/js-tips',
-  },
-];
 
 const Safari = () => {
   return (
@@ -76,12 +50,12 @@ const Safari = () => {
       <div className="blog">
         <h2>My Developer Blog</h2>
 
-        {blogPosts.length === 0 ? (
+        {blogCatalog.length === 0 ? (
           <p className="text-sm text-gray-500">No blog posts are available right now.</p>
         ) : (
           <div className="space-y-8">
-            {blogPosts.map(({ id, image, title, date, link }) => (
-              <div key={id} className="blog-post">
+            {blogCatalog.map(({ slug, image, title, date }) => (
+              <div key={slug} className="blog-post">
                 <div className="col-span-2">
                   <img src={image} alt={title} loading="lazy" />
                 </div>
@@ -90,7 +64,7 @@ const Safari = () => {
                   <p>{date}</p>
                   <h3>{title}</h3>
                   <Link
-                    to={link || APP_ROUTES.HOME}
+                    to={APP_ROUTES.BLOG_ARTICLE.replace(':slug', slug)}
                     className="text-blue-600 text-xs hover:underline flex items-center gap-3"
                   >
                     Checkout the full post <MoveRight className="icon-hover" />

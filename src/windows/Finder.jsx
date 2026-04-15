@@ -7,8 +7,8 @@ import { WINDOW_IDS } from '../config/windowIds';
 
 import { locations } from '#constants/index.js';
 import WindowWrapper from '#hoc/WindowWrapper';
-import useLocationStore from '#store/location.jsx';
 import { useWindowActions } from '#store/hooks.js';
+import useLocationStore from '#store/location.jsx';
 
 /** @typedef {import('#types/models.js').LocationNode} LocationNode */
 /** @typedef {import('#types/models.js').WindowId} WindowId */
@@ -17,17 +17,24 @@ const Finder = () => {
   const { openWindow } = useWindowActions();
   const activeLocation = useLocationStore((state) => state.activeLocation);
   const setActiveLocation = useLocationStore((state) => state.setActiveLocation);
+  const fileWindowMap = {
+    txt: WINDOW_IDS.TEXT_FILE,
+    img: WINDOW_IDS.IMAGE_FILE,
+  };
 
   /** @param {LocationNode} item */
   const openItem = (item) => {
-    const fileType = item.fileType ?? '';
-    if (item.fileType === 'pdf') return openWindow(WINDOW_IDS.RESUME);
     if (item.kind === 'folder') return setActiveLocation(item);
-    if (['fig', 'url'].includes(fileType) && item.href)
-      return window.open(item.href, '_blank', 'noopener,noreferrer');
 
-    const windowKey = `${item.fileType}${item.kind}`;
-    if (windowKey === WINDOW_IDS.TEXT_FILE || windowKey === WINDOW_IDS.IMAGE_FILE) {
+    const fileType = item.fileType ?? '';
+    if (fileType === 'pdf') return openWindow(WINDOW_IDS.RESUME);
+
+    if ((fileType === 'fig' || fileType === 'url') && typeof item.href === 'string') {
+      return window.open(item.href, '_blank', 'noopener,noreferrer');
+    }
+
+    const windowKey = fileWindowMap[fileType];
+    if (windowKey) {
       return openWindow(/** @type {WindowId} */ (windowKey), item);
     }
 

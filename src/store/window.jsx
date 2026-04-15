@@ -52,6 +52,7 @@ const useWindowStore = create(
         if (!window) return;
         window.isOpen = false;
         window.isMinimized = false;
+        window.isMaximized = false;
         window.data = null;
         window.zIndex = INITIAL_Z_INDEX;
       }),

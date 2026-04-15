@@ -4,10 +4,11 @@ import gsap from 'gsap';
 import { Draggable } from 'gsap/draggable';
 
 import { locations } from '#constants';
+
 import { WINDOW_IDS } from '../config/windowIds.js';
 
-import useLocationStore from '#store/location';
 import { useWindowActions } from '#store/hooks';
+import useLocationStore from '#store/location';
 
 /** @typedef {import('#types/models.js').LocationNode} LocationNode */
 
