@@ -16,6 +16,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { APP_ROUTES } from '../config/routes';
+import { applySeoMeta } from '../utils/seo.js';
 import { isValidBlogSlug, isValidRoute } from '../utils/validators.js';
 
 import { blogData } from '#constants/blogData';
@@ -431,7 +432,28 @@ const BlogArticle = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+
+    if (!blog) {
+      applySeoMeta({
+        title: 'Article not found | Swaraj Patil',
+        description: 'The requested article could not be found.',
+        urlPath: `/blog/${slug ?? ''}`,
+      });
+      return;
+    }
+
+    const excerpt =
+      blog.sections[0]?.content?.replace(/\s+/g, ' ').trim().slice(0, 150) ||
+      `${blog.title} by ${blog.author}`;
+
+    applySeoMeta({
+      title: `${blog.title} | Swaraj Patil`,
+      description: excerpt,
+      urlPath: `/blog/${slug ?? ''}`,
+      image: '/images/wallpaper.png',
+      type: 'article',
+    });
+  }, [blog, slug]);
 
   const handleBack = () => {
     navigate(homeRoute);

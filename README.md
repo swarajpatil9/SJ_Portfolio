@@ -1,113 +1,110 @@
-# Portfolio Site
+# 🖥️ macOS Portfolio OS
 
-A production-ready React + Vite portfolio application with a desktop-inspired interface (dock, windows, and app-like navigation).
+A production-grade, macOS-inspired desktop environment built entirely in React.
 
-## Key Features
+This is not a typical portfolio.
+It is a fully interactive system with window management, drag interactions, and application-like experiences — engineered with real-world frontend principles.
 
-- Desktop-style interaction model with draggable windows
-- Dock-driven window lifecycle (open, focus, minimize, close)
-- Window apps: Finder, Terminal, Safari-style content browser, Resume, Contact, text/image viewers
-- Blog article routing with dedicated article pages
-- Animation-rich interactions powered by GSAP
-- Modular app state powered by Zustand + Immer
+---
 
-## Tech Stack
+## 🚀 Live Demo
 
-- React 19
-- Vite 7
-- Tailwind CSS 4
-- Zustand + Immer
-- GSAP
-- React Router
-- React PDF
-- ESLint + Prettier
+👉 [Add your deployed link here]
 
-## Architecture Overview
+---
 
-Top-level structure:
+## ✨ Features
 
-- `src/components`: shared UI building blocks (Dock, Navbar, Welcome, etc.)
-- `src/windows`: app window implementations (Finder, Terminal, Safari, Resume, etc.)
-- `src/store`: Zustand stores for global app/window state
-- `src/config`: app-level constants and route config
-- `src/constants`: static datasets and window metadata
-- `src/hoc`: reusable wrappers (`WindowWrapper`) for window behavior
+* 🪟 Window management system (open, close, minimize, focus)
+* 🖱️ Drag & resize interactions with smooth motion
+* 🧠 Zustand-powered state management (type-safe + enforced)
+* ⚡ Performance optimized (lazy loading + code splitting)
+* 🎯 Keyboard shortcuts (Cmd/Ctrl + W, M, Tab, Esc)
+* 🧩 Finder-style file system with dynamic content
+* 🌐 Blog routing system with safe fallbacks
+* 🛡️ Runtime validation + defensive UI patterns
+* 🎨 Premium UX with motion system & interaction polish
 
-Runtime flow (simplified):
+---
 
-1. User clicks an app icon in the dock.
-2. Window store updates the corresponding window state.
-3. `WindowWrapper` animates and renders the target window.
-4. Routing handles standalone pages such as blog articles.
+## 🏗️ Architecture
 
-## Getting Started
+```
+src/
+  components/
+  windows/
+  hooks/
+  store/
+  utils/
+  config/
+  constants/
+  models/
+```
 
-### Prerequisites
+### Key Concepts:
 
-- Node.js 20+
-- npm 10+
+* Hook-based state access (no direct store usage)
+* Config-driven system (windows, routes, dock)
+* Centralized validation layer
+* Immutable configs
+* Type-safe JSDoc system (TS-ready)
 
-### Installation
+---
+
+## ⚙️ Tech Stack
+
+* React 19 + Vite
+* Zustand + Immer
+* GSAP (animations)
+* Tailwind CSS
+* JSDoc Type Safety
+
+---
+
+## ⚡ Performance
+
+* Lazy-loaded windows
+* Route-based code splitting
+* Optimized re-renders using selectors
+* Lightweight bundle strategy
+
+---
+
+## 🛡️ Engineering Highlights
+
+* Prevented invalid states via typed access patterns
+* Enforced store usage through custom hooks
+* Centralized validation layer for runtime safety
+* Config immutability to eliminate mutation bugs
+* Error boundaries + fallback UI across system
+
+---
+
+## 🎯 What makes this different?
+
+Most portfolios show projects.
+This project **is a system**.
+
+---
+
+## 📦 Setup
 
 ```bash
 npm install
-```
-
-### Run in Development
-
-```bash
 npm run dev
 ```
 
-Open the printed local URL in your browser.
+---
 
-### Build for Production
+## 🧠 Future Improvements
 
-```bash
-npm run build
-```
+* Full TypeScript migration
+* Testing (Vitest)
+* Multi-desktop support
+* Persistent state
 
-### Preview Production Build
+---
 
-```bash
-npm run preview
-```
+## 👨‍💻 Author
 
-## Available Scripts
-
-- `npm run dev`: Start Vite development server
-- `npm run build`: Create production build in `dist/`
-- `npm run preview`: Serve the production build locally
-- `npm run lint`: Run ESLint (fails on warnings)
-- `npm run lint:fix`: Auto-fix lint issues where possible
-- `npm run format`: Format files with Prettier
-- `npm run format:check`: Verify formatting without writing
-- `npm run typecheck`: Run TypeScript-based JS/JSX checks
-- `npm run analyze`: Build with bundle report at `dist/bundle-analysis.html`
-
-## Screenshots
-
-Add project screenshots here.
-
-Suggested files:
-
-- `public/images/screenshot-home.png`
-- `public/images/screenshot-window-stack.png`
-- `public/images/screenshot-blog.png`
-
-## Performance Notes
-
-- Manual chunk splitting is configured in Vite for key dependency groups.
-- Route/window code-splitting is used with `React.lazy` + `Suspense`.
-- Bundle analysis is available through `npm run analyze`.
-
-## Future Improvements
-
-- Add integration/e2e tests for window lifecycle interactions
-- Improve accessibility audit coverage (keyboard flows + ARIA)
-- Add CI workflow for lint, typecheck, build, and formatting checks
-- Add visual regression snapshots for critical windows
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and coding guidelines.
+Your Name

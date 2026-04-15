@@ -6,4 +6,6 @@ export const env = {
   pdfWorkerSrc:
     import.meta.env.VITE_PDF_WORKER_SRC ||
     'https://unpkg.com/pdfjs-dist@4.8.69/build/pdf.worker.min.mjs',
+  siteUrl: import.meta.env.VITE_SITE_URL || 'https://swarajpatil.dev',
+  analyticsId: import.meta.env.VITE_ANALYTICS_ID,
 };
