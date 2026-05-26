@@ -29,7 +29,7 @@ declare module '@gsap/react' {
   export function useGSAP(effect: () => void | (() => void), deps?: unknown[]): void;
 }
 
-declare module 'gsap/draggable' {
+declare module 'gsap/Draggable' {
   export interface DraggableInstance {
     target: HTMLElement;
     x: number;
@@ -43,4 +43,8 @@ declare module 'gsap/draggable' {
   }
 
   export const Draggable: DraggablePlugin;
+}
+
+declare module 'gsap/draggable' {
+  export * from 'gsap/Draggable';
 }

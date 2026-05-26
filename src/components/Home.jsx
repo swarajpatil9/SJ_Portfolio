@@ -1,7 +1,7 @@
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
-import { Draggable } from 'gsap/draggable';
+import { Draggable } from 'gsap/Draggable';
 
 import { locations } from '#constants';
 
@@ -17,7 +17,7 @@ import useLocationStore from '#store/location';
 
 /** @type {import('gsap').GSAP} */
 const gsapApi = gsap;
-/** @type {import('gsap/draggable').DraggablePlugin} */
+/** @type {import('gsap/Draggable').DraggablePlugin} */
 const draggablePlugin = Draggable;
 
 try {
